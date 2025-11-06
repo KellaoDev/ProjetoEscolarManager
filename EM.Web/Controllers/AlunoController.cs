@@ -2,60 +2,55 @@
 using EM.Repository.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EM.Web.Controllers;
-
-public class AlunoController : Controller
+namespace EM.Web.Controllers
 {
-    private readonly IRepositorioAbstrato<Aluno> _repositorioAluno;
-    private readonly IRepositorioAbstrato<Cidade> _repositorioCidade;
-    public AlunoController(IRepositorioAbstrato<Aluno> repositorioAluno, IRepositorioAbstrato<Cidade> repositorioCidade)
+    public class AlunoController(IRepositorioAluno repositorioAluno, IRepositorioCidade repositorioCidade) : Controller
     {
-        _repositorioAluno = repositorioAluno;
-        _repositorioCidade = repositorioCidade;
-    }
+        private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
+        private readonly IRepositorioCidade _repositorioCidade = repositorioCidade;
 
-    [HttpGet]
-    public IActionResult Salvar(int? id)
-    {
-        ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
-        if (id is null)
+        public IActionResult Salvar(int? id)
         {
-            ViewBag.IsEdicao = false;
-            return View("Aluno", new Aluno());
-        }
-        ViewBag.IsEdicao = true;
-        Aluno? aluno = _repositorioAluno.Get(c => c.Matricula == id).FirstOrDefault();
-
-        return View("Aluno", aluno);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Salvar(Aluno aluno)
-    {
-        if (!ModelState.IsValid)
-        {
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
+            if (id is null)
             {
-                Console.WriteLine(error.ErrorMessage);
+                ViewBag.IsEdicao = false;
+                return View("Aluno", new Aluno());
             }
+            ViewBag.IsEdicao = true;
+            Aluno? aluno = _repositorioAluno.Get(c => c.Matricula == id).FirstOrDefault();
+
+            return View("Aluno", aluno);
         }
 
-        if (ModelState.IsValid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Salvar(Aluno aluno)
         {
-            if (aluno.Matricula > 0)
+            if (!ModelState.IsValid)
             {
-                _repositorioAluno.Update(aluno);
-            }
-            else
-            {
-                _repositorioAluno.Add(aluno);
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
             }
 
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                if (aluno.Matricula > 0)
+                {
+                    _repositorioAluno.Update(aluno);
+                }
+                else
+                {
+                    _repositorioAluno.Add(aluno);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsEdicao = aluno.Matricula > 0;
+            ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
+            return View("Aluno", aluno);
         }
-        ViewBag.IsEdicao = aluno.Matricula > 0;
-        ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
-        return View("Aluno", aluno);
     }
 }
