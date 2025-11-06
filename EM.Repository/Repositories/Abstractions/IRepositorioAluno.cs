@@ -6,6 +6,5 @@ namespace EM.Repository.Repositories.Abstractions
     {
         Aluno GetByMatricula(int matricula);
         IEnumerable<Aluno> GetByContendoNoNome(string contendoNome);
-        bool PossuiRegistro(int cidadeId);
     }
 }
