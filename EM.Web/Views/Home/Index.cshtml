@@ -1,8 +1,87 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<EM.Domain.Aluno>
+
+@{
+    ViewData["Title"] = "Lista de Alunos";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2>@ViewData["Title"]</h2>
+
+<a asp-controller="Aluno" asp-action="Salvar" class="btn btn-success mb-3">Novo Aluno</a>
+
+<form method="get" asp-action="Buscar" class="row mb-3">
+    <div class="col-md-5">
+        <input type="text" name="termoPesquisa" class="form-control" placeholder="Matrícula ou nome do aluno..." />
+    </div>
+    <div class="col-md-3">
+        <select name="tipoPesquisa" class="form-control">
+            <option value="todos">Todos</option>
+            <option value="matricula">Matrícula</option>
+            <option value="nome">Nome</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Data de Nascimento</th>
+                <th>Sexo</th>
+                <th>Cidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var aluno in Model)
+            {
+                <tr>
+                    <td>@aluno.Matricula</td>
+                    <td>@aluno.Nome</td>
+                    <td>@aluno.Cpf</td>
+                    <td>@aluno.DataNascimento.ToString("dd/MM/yyyy")</td>
+                    <td>@aluno.EnumeradorSexo</td>
+                    <td>@aluno.Cidade?.Descricao</td>
+                    <td>
+                        <a href="@Url.Action("Salvar", "Aluno", new { id = aluno.Matricula })" class="btn btn-primary btn-sm">
+                            Editar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        Nenhum aluno encontrado.
+    </div>
+}
+<!-- Modal de exclusão -->
+<div class="modal fade" id="excluirModal" tabindex="-1" aria-labelledby="excluirModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formExcluir" method="post" asp-action="ExcluirConfirmado" asp-controller="Aluno">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir o aluno <strong id="alunoNome"></strong>?</p>
+                    <input type="hidden" name="id" id="alunoId" value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
