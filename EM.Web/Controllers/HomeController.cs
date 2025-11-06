@@ -1,32 +1,48 @@
-using System.Diagnostics;
-using EM.Web.Models;
+using EM.Repository.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using EM.Domain;
 
 namespace EM.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IRepositorioAbstrato<Aluno> repositorioAluno) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly IRepositorioAbstrato<Aluno> _repositorioAluno = repositorioAluno;
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Aluno> listaAlunos = _repositorioAluno.GetAll();
+            return View(listaAlunos);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Buscar(string termoPesquisa, string tipoPesquisa)
         {
-            return View();
+            IEnumerable<Aluno> listaAlunos = [];
+
+            if (string.IsNullOrWhiteSpace(tipoPesquisa) || tipoPesquisa == "todos")
+            {
+                listaAlunos = _repositorioAluno.GetAll();
+            }
+            else if (!string.IsNullOrWhiteSpace(termoPesquisa))
+            {
+                if (tipoPesquisa == "matricula" && int.TryParse(termoPesquisa, out int mat))
+                {
+                    listaAlunos = _repositorioAluno.Get(a => a.Matricula == mat);
+                }
+                else if (tipoPesquisa == "nome")
+                {
+                    listaAlunos = _repositorioAluno.Get(a => a.Nome.Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
+                }
+            }
+
+            if (!listaAlunos.Any())
+            {
+                ViewBag.Mensagem = "Nenhum aluno encontrado para a pesquisa informada.";
+            }
+
+            return View("Index", listaAlunos);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
+
 }
