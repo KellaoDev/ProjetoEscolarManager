@@ -1,3 +1,7 @@
+using EM.Domain;
+using EM.Repository.Repositories;
+using EM.Repository.Repositories.Abstractions;
+
 namespace EM.Web
 {
     public class Program
@@ -8,6 +12,9 @@ namespace EM.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IRepositorioAbstrato<Aluno>, RepositorioAluno>();
+            builder.Services.AddScoped<IRepositorioAbstrato<Cidade>, RepositorioCidade>();
 
             var app = builder.Build();
 
