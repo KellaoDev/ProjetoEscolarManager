@@ -155,22 +155,22 @@ namespace EM.Repository.Repositories
         }
 
         //Ajustar
-        public bool PossuiRegistro(int codigoIBGE)
+        public bool PossuiRegistro(int codigo)
         {
             try
             {
                 using DbConnection conexao = DBHelper.CriarConexao();
                 using DbCommand comando = conexao.CreateCommand();
 
-                comando.CommandText = "SELECT COUNT(*) FROM TBCIDADE WHERE CIDACODIGOIBGE = @CIDACODIGOIBGE";
-                comando.Parameters.CreateParameter("@CIDACODIGOIBGE", codigoIBGE);
+                comando.CommandText = "SELECT COUNT(*) FROM TBALUNO WHERE CIDACODIGO = @CIDACODIGO";
+                comando.Parameters.CreateParameter("@CIDACODIGO", codigo);
 
                 using DbDataReader dr = comando.ExecuteReader();
                 return dr.Read() && dr.GetInt64(0) > 0;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Não foi possível obter registros por código IBGE", ex);
+                throw new InvalidOperationException("Não foi possível obter registros por código", ex);
             }
         }
     }
