@@ -1,0 +1,70 @@
+@using EM.Domain
+@model EM.Domain.Cidade
+
+@{
+    bool isEdicao = ViewBag.IsEdicao ?? false;
+    string titulo = isEdicao ? "Editar Cidade" : "Cadastrar Cidade";
+
+    ViewData["Title"] = titulo;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>@titulo</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Cidade" asp-action="Salvar" method="post">
+
+                        @* Campo oculto para Código (quando for edição) *@
+                        @if (isEdicao)
+                        {
+                            <input type="hidden" asp-for="Codigo" />
+                        }
+
+                        @* Código - apenas visível no cadastro *@
+                        @if (!isEdicao)
+                        {
+                            <div class="form-group mb-3">
+                                <label asp-for="Codigo" class="form-label">Codigo</label>
+                                <input asp-for="Codigo" class="form-control" />
+                            </div>
+                        }
+
+                        @* Nome *@
+                        <div class="form-group mb-3">
+                            <label asp-for="Descricao" class="form-label">Nome da Cidade</label>
+                            <input asp-for="Descricao" class="form-control" />
+                        </div>
+
+                        @* CPF *@
+                        <div class="form-group mb-3">
+                            <label asp-for="UF" class="form-label">UF</label>
+                            <input asp-for="UF" class="form-control" />
+                        </div>
+
+                        @* Data de Nascimento *@
+                        <div class="form-group mb-3">
+                            <label asp-for="CodigoIBGE" class="form-label">Código Do IBGE</label>
+                            <input asp-for="CodigoIBGE" type="text" class="form-control" />
+                        </div>
+
+                        @* Botões *@
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> @(isEdicao ? "Salvar Alterações" : "Cadastrar")
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
