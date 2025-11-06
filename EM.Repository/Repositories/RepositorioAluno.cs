@@ -91,7 +91,7 @@ namespace EM.Repository.Repositories
         {
             try
             {
-                List<Aluno> alunos = [];
+                List<Aluno> listaAlunos = [];
 
                 using DbConnection cn = DBHelper.CriarConexao();
                 using DbCommand cmd = cn.CreateCommand();
@@ -122,13 +122,13 @@ namespace EM.Repository.Repositories
                         }
                     };
 
-                    alunos.Add(aluno);
+                    listaAlunos.Add(aluno);
                 }
-                return alunos;
+                return listaAlunos;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Não foi possível todos os alunos", ex);
+                throw new InvalidOperationException("Não foi possível todos os listaAlunos", ex);
             }
         }
 
@@ -141,7 +141,7 @@ namespace EM.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Não foi possível obter os alunos por predicado", ex);
+                throw new InvalidOperationException("Não foi possível obter os listaAlunos por predicado", ex);
             }
         }
 
