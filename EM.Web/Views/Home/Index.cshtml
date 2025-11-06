@@ -4,9 +4,12 @@
     ViewData["Title"] = "Lista de Alunos";
 }
 
-<h2>@ViewData["Title"]</h2>
-
-<a asp-controller="Aluno" asp-action="Salvar" class="btn btn-success mb-3">Novo Aluno</a>
+<div class="d-flex justify-content-between align-items-center">
+    <h2>@ViewData["Title"]</h2>
+    <a href="@Url.Action("Salvar", "Aluno")" class="btn btn-success btn-sm p-2">
+        Adicionar Aluno
+    </a>
+</div>
 
 <form method="get" asp-action="Buscar" class="row mb-3">
     <div class="col-md-5">
@@ -35,6 +38,7 @@
                 <th>Data de Nascimento</th>
                 <th>Sexo</th>
                 <th>Cidade</th>
+                <th>Opcões</th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +55,7 @@
                         <a href="@Url.Action("Salvar", "Aluno", new { id = aluno.Matricula })" class="btn btn-primary btn-sm">
                             Editar
                         </a>
-                    </td>
+                    </td>     
                 </tr>
             }
         </tbody>
