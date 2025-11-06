@@ -4,9 +4,9 @@ using EM.Domain;
 
 namespace EM.Web.Controllers
 {
-    public class HomeController(IRepositorioAbstrato<Aluno> repositorioAluno) : Controller
+    public class HomeController(IRepositorioAluno repositorioAluno) : Controller
     {
-        private readonly IRepositorioAbstrato<Aluno> _repositorioAluno = repositorioAluno;
+        private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
 
         public IActionResult Index()
         {
