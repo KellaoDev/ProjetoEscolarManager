@@ -170,24 +170,5 @@ namespace EM.Repository.Repositories
                 throw new InvalidOperationException("Não foi possível obter o aluno por matrícula", ex);
             }
         }
-
-        public bool PossuiRegistro(int cidadeId)
-        {
-            try
-            {
-                using DbConnection conexao = DBHelper.CriarConexao();
-                using DbCommand comando = conexao.CreateCommand();
-
-                comando.CommandText = "SELECT COUNT(*) FROM TBALUNO WHERE CIDACODIGO = @CIDACODIGO";
-                comando.Parameters.CreateParameter("@CIDACODIGO", cidadeId);
-
-                using DbDataReader dr = comando.ExecuteReader();
-                return dr.Read() && dr.GetInt64(0) > 0;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Não foi possível obter registros por aluno", ex);
-            }
-        }
     }
 }
