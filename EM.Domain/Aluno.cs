@@ -32,7 +32,7 @@ namespace EM.Domain
 
         public int CidadeId { get; set; }
 
-        public Cidade Cidade { get; set; } = new Cidade();
+        public Cidade? Cidade { get; set; }
 
         public override bool Equals(object? obj)
         {
