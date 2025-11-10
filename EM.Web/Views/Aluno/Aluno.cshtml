@@ -8,14 +8,12 @@
     ViewData["Title"] = titulo;
 }
 
-<h2>@ViewData["Title"]</h2>
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h2>@titulo</h2>
+                    <h2>@ViewData["Title"]</h2>
                 </div>
                 <div class="card-body">
                     <form asp-controller="Aluno" asp-action="Salvar" method="post">
@@ -24,16 +22,6 @@
                         @if (isEdicao)
                         {
                             <input type="hidden" asp-for="Matricula" />
-                        }
-
-                        @* Matrícula - apenas visível no cadastro *@
-                        @if (!isEdicao)
-                        {
-                            <div class="form-group mb-3">
-                                <label asp-for="Matricula" class="form-label">Matrícula</label>
-                                <input asp-for="Matricula" class="form-control" required />
-                                <span asp-validation-for="Matricula" class="text-danger"></span>
-                            </div>
                         }
 
                         @* Nome *@
