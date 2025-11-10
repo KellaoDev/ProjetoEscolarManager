@@ -18,10 +18,9 @@ namespace EM.Repository.Repositories
                 using DbCommand cmd = cn.CreateCommand();
 
                 cmd.CommandText =
-                    @"INSERT INTO TBALUNO (ALUNMATRICULA, ALUNNOME, ALUNCPF, ALUNDTNASC, ALUNSEXO, CIDACODIGO)
-                                      VALUES (@ALUNMATRICULA, @ALUNNOME, @ALUNCPF, @ALUNDTNASC, @ALUNSEXO, @CIDACODIGO)";
+                    @"INSERT INTO TBALUNO (ALUNNOME, ALUNCPF, ALUNDTNASC, ALUNSEXO, CIDACODIGO)
+                                      VALUES (@ALUNNOME, @ALUNCPF, @ALUNDTNASC, @ALUNSEXO, @CIDACODIGO)";
 
-                cmd.Parameters.CreateParameter("@ALUNMATRICULA", aluno.Matricula);
                 cmd.Parameters.CreateParameter("@ALUNNOME", aluno.Nome);
                 cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf);
                 cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);

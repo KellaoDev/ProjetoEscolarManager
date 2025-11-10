@@ -17,10 +17,9 @@ namespace EM.Repository.Repositories
                 using DbCommand cmd = cn.CreateCommand();
 
                 cmd.CommandText =
-                    @"INSERT INTO TBCIDADE (CIDACODIGO, CIDADESCRICAO, CIDAUF, CIDACODIGOIBGE)
-                                       VALUES (@CIDACODIGO, @CIDADESCRICAO, @CIDAUF, @CIDACODIGOIBGE)";
+                    @"INSERT INTO TBCIDADE (CIDADESCRICAO, CIDAUF, CIDACODIGOIBGE)
+                                       VALUES (@CIDADESCRICAO, @CIDAUF, @CIDACODIGOIBGE)";
 
-                cmd.Parameters.CreateParameter("@CIDACODIGO", cidade.Codigo);
                 cmd.Parameters.CreateParameter("@CIDADESCRICAO", cidade.Descricao);
                 cmd.Parameters.CreateParameter("@CIDAUF", cidade.UF);
 
