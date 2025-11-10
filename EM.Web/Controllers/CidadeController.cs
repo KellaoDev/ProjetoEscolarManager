@@ -96,7 +96,7 @@ namespace EM.Web.Controllers
             Cidade cidade = _repositorioCidade.Get(c => c.Codigo == id).First();
             _repositorioCidade.Remove(cidade);
 
-            TempData["MensagemSucesso"] = "Cidade excluída com sucesso!";
+            TempData["MensagemSucesso"] = "Cidade excluída com sucesso! ✅";
             return RedirectToAction("ListaCidade");
         }
     }
