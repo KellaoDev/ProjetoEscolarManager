@@ -27,14 +27,6 @@ namespace EM.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Salvar(Aluno aluno)
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 if (aluno.Matricula > 0)
@@ -51,6 +43,15 @@ namespace EM.Web.Controllers
             ViewBag.IsEdicao = aluno.Matricula > 0;
             ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
             return View("Aluno", aluno);
+        }
+
+        public IActionResult Remove(int id)
+        {
+            Aluno aluno = _repositorioAluno.Get(c => c.Matricula == id).First();
+            _repositorioAluno.Remove(aluno);
+
+            TempData["MensagemSucesso"] = "Aluno excluido com sucesso! ✅";
+            return RedirectToAction("Index", "Home");
         }
     }
 }
