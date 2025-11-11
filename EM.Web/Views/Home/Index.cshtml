@@ -27,6 +27,20 @@
     </div>
 </form>
 
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["MensagemErro"]
+    </div>
+}
+
 @if (Model.Any())
 {
     <table class="table table-striped">
@@ -55,6 +69,10 @@
                         <a href="@Url.Action("Salvar", "Aluno", new { id = aluno.Matricula })" class="btn btn-primary btn-sm">
                             Editar
                         </a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#excluirModal"
+                                onclick="abrirModalExcluir('@aluno.Matricula', '@aluno.Nome')">
+                            Excluir
+                        </button>
                     </td>     
                 </tr>
             }
@@ -71,14 +89,15 @@ else
 <div class="modal fade" id="excluirModal" tabindex="-1" aria-labelledby="excluirModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="formExcluir" method="post" asp-action="ExcluirConfirmado" asp-controller="Aluno">
+            <form id="formExcluir" method="post" asp-action="Remove" asp-controller="Aluno">
+                @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <p>Tem certeza que deseja excluir o aluno <strong id="alunoNome"></strong>?</p>
-                    <input type="hidden" name="id" id="alunoId" value="" />
+                    <input type="hidden" name="id" id="alunoCodigo" value="" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -88,4 +107,11 @@ else
         </div>
     </div>
 </div>
+
+<script>
+    function abrirModalExcluir(id, nome) {
+        document.getElementById("alunoCodigo").value = id;
+        document.getElementById("alunoNome").innerText = nome;
+    }
+</script>
 
