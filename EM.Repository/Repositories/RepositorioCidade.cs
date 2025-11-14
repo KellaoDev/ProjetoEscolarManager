@@ -1,4 +1,5 @@
 ﻿using EM.Domain;
+using EM.Domain.Enums;
 using EM.Repository.Database;
 using EM.Repository.ExtensionMethods;
 using EM.Repository.Repositories.Abstractions;
@@ -21,11 +22,11 @@ namespace EM.Repository.Repositories
                                        VALUES (@CIDADESCRICAO, @CIDAUF, @CIDACODIGOIBGE)";
 
                 cmd.Parameters.CreateParameter("@CIDADESCRICAO", cidade.Descricao);
-                cmd.Parameters.CreateParameter("@CIDAUF", cidade.UF);
+                cmd.Parameters.CreateParameter("@CIDAUF", cidade.EnumeradorUF);
 
-                cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0 ?
-                    cidade.CodigoIBGE.ToString() :
-                    DBNull.Value);
+                cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0 
+                    ? cidade.CodigoIBGE
+                    : DBNull.Value);
 
                 cmd.ExecuteNonQuery();
             }
@@ -68,11 +69,11 @@ namespace EM.Repository.Repositories
 
                 cmd.Parameters.CreateParameter("@CIDACODIGO", cidade.Codigo);
                 cmd.Parameters.CreateParameter("@CIDADESCRICAO", cidade.Descricao);
-                cmd.Parameters.CreateParameter("@CIDAUF", cidade.UF);
+                cmd.Parameters.CreateParameter("@CIDAUF", cidade.EnumeradorUF);
 
-                cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0 ?
-                    cidade.CodigoIBGE.ToString() :
-                    DBNull.Value);
+                cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0
+                    ? cidade.CodigoIBGE
+                    : DBNull.Value);
 
                 cmd.ExecuteNonQuery();
             }
@@ -100,8 +101,10 @@ namespace EM.Repository.Repositories
                     {
                         Codigo = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
                         Descricao = dr.GetString(dr.GetOrdinal("CIDADESCRICAO")),
-                        UF = dr.GetString(dr.GetOrdinal("CIDAUF")),
-                        CodigoIBGE = dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
+                        EnumeradorUF = (EnumeradorUF)dr.GetInt32(dr.GetOrdinal("CIDAUF")),
+                        CodigoIBGE = dr.IsDBNull(dr.GetOrdinal("CIDACODIGOIBGE"))
+                        ? null
+                        : dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
                     };
 
                     cidades.Add(cidade);
@@ -153,23 +156,76 @@ namespace EM.Repository.Repositories
             }
         }
 
-        //Ajustar
         public bool PossuiRegistro(int codigo)
         {
             try
             {
-                using DbConnection conexao = DBHelper.CriarConexao();
-                using DbCommand comando = conexao.CreateCommand();
+                using DbConnection cn = DBHelper.CriarConexao();
+                using DbCommand cmd = cn.CreateCommand();
 
-                comando.CommandText = "SELECT COUNT(*) FROM TBALUNO WHERE CIDACODIGO = @CIDACODIGO";
-                comando.Parameters.CreateParameter("@CIDACODIGO", codigo);
+                cmd.CommandText = "SELECT COUNT(*) FROM TBALUNO WHERE CIDACODIGO = @CIDACODIGO";
+                cmd.Parameters.CreateParameter("@CIDACODIGO", codigo);
 
-                using DbDataReader dr = comando.ExecuteReader();
+                using DbDataReader dr = cmd.ExecuteReader();
                 return dr.Read() && dr.GetInt64(0) > 0;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Não foi possível obter registros por código", ex);
+            }
+        }
+
+        public bool DescricaoExiste(string? descricao, int? codigoDesconsiderar = null)
+        {
+            if (string.IsNullOrWhiteSpace(descricao))
+                return false;
+
+            try
+            {
+                using DbConnection cn = DBHelper.CriarConexao();
+                using DbCommand cmd = cn.CreateCommand();
+
+                cmd.CommandText = @"SELECT COUNT(1) 
+                                    FROM TBCIDADE
+                                    WHERE UPPER(CIDADESCRICAO) = UPPER(@DESCRICAO)
+                                    AND (@CODIGO IS NULL OR CIDACODIGO <> @CODIGO)";
+
+                cmd.Parameters.CreateParameter("@DESCRICAO", descricao);
+                cmd.Parameters.CreateParameter("@CODIGO", codigoDesconsiderar.HasValue ? codigoDesconsiderar.Value : DBNull.Value);
+
+                using DbDataReader dr = cmd.ExecuteReader();
+                return dr.Read() && dr.GetInt64(0) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Não foi possível verificar a existência da cidade.", ex);
+            }
+        }
+
+        public bool CodigoIbgeExiste(int? codigoIbge, int? codigoDesconsiderar = null)
+        {
+            if (!codigoIbge.HasValue)
+                return false;
+
+            try
+            {
+                using DbConnection cn = DBHelper.CriarConexao();
+                using DbCommand cmd = cn.CreateCommand();
+
+                cmd.CommandText = @"SELECT COUNT(1)
+                                    FROM TBCIDADE
+                                    WHERE CIDACODIGOIBGE = @CIDACODIGOIBGE
+                                    AND (@CODIGO IS NULL OR CIDACODIGO <> @CODIGO)";
+
+                cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", codigoIbge.Value);
+                cmd.Parameters.CreateParameter("@CODIGO", codigoDesconsiderar.HasValue ? codigoDesconsiderar.Value : DBNull.Value);
+
+                using DbDataReader dr = cmd.ExecuteReader();
+                return dr.Read() && dr.GetInt64(0) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Não foi possível verificar a existência do código IBGE.", ex);
             }
         }
     }

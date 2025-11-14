@@ -22,7 +22,7 @@ namespace EM.Repository.Repositories
                                       VALUES (@ALUNNOME, @ALUNCPF, @ALUNDTNASC, @ALUNSEXO, @CIDACODIGO)";
 
                 cmd.Parameters.CreateParameter("@ALUNNOME", aluno.Nome);
-                cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf);
+                cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
                 cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
                 cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
                 cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.CidadeId);
@@ -72,7 +72,7 @@ namespace EM.Repository.Repositories
 
                 cmd.Parameters.CreateParameter("@ALUNMATRICULA", aluno.Matricula);
                 cmd.Parameters.CreateParameter("@ALUNNOME", aluno.Nome);
-                cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf);
+                cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
                 cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
                 cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
                 cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.CidadeId);
@@ -116,8 +116,10 @@ namespace EM.Repository.Repositories
                         {
                             Codigo = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
                             Descricao = dr.GetString(dr.GetOrdinal("CIDADESCRICAO")),
-                            UF = dr.GetString(dr.GetOrdinal("CIDAUF")),
-                            CodigoIBGE = dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
+                            EnumeradorUF = (EnumeradorUF)dr.GetInt32(dr.GetOrdinal("CIDAUF")),
+                            CodigoIBGE = dr.IsDBNull(dr.GetOrdinal("CIDACODIGOIBGE"))
+                            ? null
+                            : dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
                         }
                     };
 
@@ -167,6 +169,31 @@ namespace EM.Repository.Repositories
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Não foi possível obter o aluno por matrícula", ex);
+            }
+        }
+
+        public bool CpfExiste(string? cpf, int? matriculaDesconsiderar = null)
+        {
+            if (string.IsNullOrWhiteSpace(cpf))
+                return false;
+            try
+            {
+                using DbConnection cn = DBHelper.CriarConexao();
+                using DbCommand cmd = cn.CreateCommand();
+                
+                cmd.CommandText = @"SELECT COUNT(1) 
+                                    FROM TBALUNO
+                                    WHERE ALUNCPF = @ALUNCPF
+                                    AND (@MATRICULA IS NULL OR ALUNMATRICULA <> @MATRICULA)";
+                cmd.Parameters.CreateParameter("@ALUNCPF", cpf);
+                cmd.Parameters.CreateParameter("@MATRICULA", matriculaDesconsiderar.HasValue ? matriculaDesconsiderar.Value : DBNull.Value);
+
+                using DbDataReader dr = cmd.ExecuteReader();
+                return dr.Read() && dr.GetInt64(0) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Não foi possível verificar a existência do CPF.", ex);
             }
         }
     }
