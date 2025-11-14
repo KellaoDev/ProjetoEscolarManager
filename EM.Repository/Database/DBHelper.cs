@@ -5,7 +5,10 @@ namespace EM.Repository.Database
     public class DBHelper
     {
         private static readonly string _stringConexao =
-            @"Server=localhost; Port=3055; Database=C:\\WorkKelio\\ProjetoEscolarManager\\EM.Repository\\Database\\BANCO.fdb; User=SYSDBA; Password=masterkey;";
+            @"Server=localhost; Port=3055; 
+                                Database=C:\\WorkKelio\\ProjetoEscolarManager\\EM.Repository\\Database\\BANCO.fdb;
+                                User=SYSDBA;
+                                Password=masterkey;";
 
         private static DBHelper? _instancia;
 
