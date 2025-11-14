@@ -1,4 +1,5 @@
 @using EM.Domain
+@using EM.Domain.Enums
 @model EM.Domain.Cidade
 
 @{
@@ -23,25 +24,26 @@
                             <input type="hidden" asp-for="Codigo" />
                         }
 
-                        @* Nome *@
                         <div class="form-group mb-3">
-                            <label asp-for="Descricao" class="form-label">Nome da Cidade</label>
+                            <label asp-for="Descricao" class="form-label"></label>
                             <input asp-for="Descricao" class="form-control" />
+                            <span asp-validation-for="Descricao" class="text-danger"></span>
                         </div>
 
-                        @* CPF *@
                         <div class="form-group mb-3">
-                            <label asp-for="UF" class="form-label">UF</label>
-                            <input asp-for="UF" class="form-control" />
+                            <label asp-for="EnumeradorUF" class="form-label"></label>
+                            <select asp-for="EnumeradorUF" class="form-control"
+                                    asp-items="Html.GetEnumSelectList<EnumeradorUF>()">
+                            </select>
+                            <span asp-validation-for="EnumeradorUF" class="text-danger"></span>
                         </div>
 
-                        @* Data de Nascimento *@
                         <div class="form-group mb-3">
-                            <label asp-for="CodigoIBGE" class="form-label">Código Do IBGE</label>
-                            <input asp-for="CodigoIBGE" type="text" class="form-control" />
+                            <label asp-for="CodigoIBGE" class="form-label"></label>
+                            <input asp-for="CodigoIBGE" type="number" class="form-control" />
+                            <span asp-validation-for="CodigoIBGE" class="text-danger"></span>
                         </div>
 
-                        @* Botões *@
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save"></i> @(isEdicao ? "Salvar Alterações" : "Cadastrar")
