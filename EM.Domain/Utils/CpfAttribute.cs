@@ -9,7 +9,7 @@ namespace EM.Domain.Utils
         {
             if (value is not string Cpf || string.IsNullOrWhiteSpace(Cpf))
             {
-                return new ValidationResult("CPF é obrigatório");
+                return ValidationResult.Success;
             }
 
             if (!Validacoes.ValidaCpf(Cpf))
