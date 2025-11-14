@@ -1,4 +1,5 @@
-﻿using EM.Domain.Interfaces;
+﻿using EM.Domain.Enums;
+using EM.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace EM.Domain
@@ -10,15 +11,16 @@ namespace EM.Domain
         [Display(Name = "Código")]
         public int Codigo { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Nome da Cidade")]
         public string Descricao { get; set; }
 
         [Required]
-        public string UF { get; set; }
+        [Display(Name = "UF")]
+        public EnumeradorUF EnumeradorUF { get; set; }
 
         [Display(Name = "Código IBGE")]
-        public int CodigoIBGE { get; set; } 
+        public int? CodigoIBGE { get; set; } 
 
         public override bool Equals(object? obj)
         {
