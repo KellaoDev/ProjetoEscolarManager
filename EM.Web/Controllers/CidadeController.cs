@@ -30,7 +30,7 @@ namespace EM.Web.Controllers
                 }
                 else if(tipoPesquisa == "uf")
                 {
-                    listaCidades = _repositorioCidade.Get(d => d.UF.Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
+                    listaCidades = _repositorioCidade.Get(d => d.EnumeradorUF.ToString().Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
                 }
             }
 
@@ -61,27 +61,37 @@ namespace EM.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
+                ViewBag.IsEdicao = cidade.Codigo > 0;
+                return View("Cidade", cidade);
             }
 
-            if (ModelState.IsValid)
+            if (_repositorioCidade.DescricaoExiste(cidade.Descricao, cidade.Codigo))
             {
-                if(cidade.Codigo > 0)
-                {
-                    _repositorioCidade.Update(cidade);
-                } 
-                else
-                {
-                    _repositorioCidade.Add(cidade);
-                }
+                ModelState.AddModelError("Descricao", "Já existe uma cidade cadastrada com esse nome.");
                 ViewBag.IsEdicao = cidade.Codigo > 0;
-                return RedirectToAction("ListaCidade", "Cidade");
+                return View("Cidade", cidade);
             }
-            return View("ListaCidade");
+
+            if (_repositorioCidade.CodigoIbgeExiste(cidade.CodigoIBGE, cidade.Codigo))
+            {
+                ModelState.AddModelError("CodigoIBGE", "Já existe uma cidade com esse Código IBGE.");
+                ViewBag.IsEdicao = cidade.Codigo > 0;
+                return View("Cidade", cidade);
+            }
+
+            if (cidade.Codigo > 0)
+            {
+                _repositorioCidade.Update(cidade);
+            }
+            else
+            {
+                _repositorioCidade.Add(cidade);
+            }
+
+            TempData["MensagemSucesso"] = "Cidade salva com sucesso! ✅";
+            return RedirectToAction("ListaCidade", "Cidade");
         }
+
 
         public IActionResult Remove(int id)
         {

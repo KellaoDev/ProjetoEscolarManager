@@ -27,22 +27,32 @@ namespace EM.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Salvar(Aluno aluno)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (aluno.Matricula > 0)
-                {
-                    _repositorioAluno.Update(aluno);
-                }
-                else
-                {
-                    _repositorioAluno.Add(aluno);
-                }
-
-                return RedirectToAction("Index", "Home");
+                ViewBag.IsEdicao = aluno.Matricula > 0;
+                ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
+                return View("Aluno", aluno);
             }
-            ViewBag.IsEdicao = aluno.Matricula > 0;
-            ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
-            return View("Aluno", aluno);
+
+            if (_repositorioAluno.CpfExiste(aluno.Cpf, aluno.Matricula))
+            {
+                ModelState.AddModelError("Cpf", "Já existe um aluno cadastrado com esse CPF.");
+                ViewBag.IsEdicao = false;
+                ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
+                return View("Aluno", aluno);
+            }
+            
+            if (aluno.Matricula > 0)
+            {
+                _repositorioAluno.Update(aluno);
+            }
+            else
+            {
+                _repositorioAluno.Add(aluno);
+            }
+
+            TempData["MensagemSucesso"] = "Aluno salvo com sucesso! ✅";
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Remove(int id)
