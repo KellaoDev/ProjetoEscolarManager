@@ -13,7 +13,7 @@ namespace EM.Domain
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Nome da Cidade")]
-        public string Descricao { get; set; }
+        public string Descricao { get; set; } = string.Empty;
 
         [Required]
         [Display(Name = "UF")]
@@ -31,6 +31,11 @@ namespace EM.Domain
         public override int GetHashCode()
         {
             return HashCode.Combine(Codigo);
+        }
+
+        public override string ToString()
+        {
+            return $"Código: {Codigo}, Descrição: {Descricao}, UF: {EnumeradorUF}, Código IBGE: {CodigoIBGE}";
         }
     }
 }

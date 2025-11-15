@@ -15,7 +15,7 @@ namespace EM.Domain
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Nome Completo")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "O {0} deve ter entre {2} e {1} caracteres.")]
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
 
         [Cpf]
         [Display(Name = "CPF")]
@@ -47,7 +47,7 @@ namespace EM.Domain
 
         public override string ToString()
         {
-            return $"Matrícula: {Matricula}";
+            return $"Matrícula: {Matricula}, Nome: {Nome}, CPF: {Cpf}, Sexo: {EnumeradorSexo}, Data de Nascimento: {DataNascimento}, Cidade: {Cidade}";
         }
     }
 }
