@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Views\NewFolder1\**" />
-    <Compile Remove="Views\NewFolder\**" />
     <Content Remove="Views\NewFolder1\**" />
-    <Content Remove="Views\NewFolder\**" />
     <EmbeddedResource Remove="Views\NewFolder1\**" />
-    <EmbeddedResource Remove="Views\NewFolder\**" />
     <None Remove="Views\NewFolder1\**" />
-    <None Remove="Views\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +20,10 @@
   <ItemGroup>
     <Content Remove="Views\Aluno.cshtml" />
     <Content Remove="Views\Home\Aluno.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
   </ItemGroup>
 
   <ItemGroup>
