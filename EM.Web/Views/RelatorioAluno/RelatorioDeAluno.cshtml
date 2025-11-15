@@ -1,0 +1,70 @@
+﻿@model EM.Domain.ParametrosRelatorioAluno
+
+@{
+    ViewData["Title"] = "Relatório de Alunos";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <h2 class="mb-4">@ViewData["Title"]</h2>
+
+        <form asp-action="EmitirRelatorio" method="post">
+
+            <h5 class="mt-4 mb-4">Parâmetros de Exibição</h5>
+
+            <div class="row g-4">
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">CPF</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="EhParaEmitirCpf" value="true" id="cpfMostrar">
+                        <label class="btn btn-outline-primary" for="cpfMostrar">Mostrar</label>
+
+                        <input type="radio" class="btn-check" name="EhParaEmitirCpf" value="false" id="cpfOcultar" checked>
+                        <label class="btn btn-outline-secondary" for="cpfOcultar">Ocultar</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Data de Nascimento</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="EhParaEmitirDataNascimento" value="true" id="dataMostrar">
+                        <label class="btn btn-outline-primary" for="dataMostrar">Mostrar</label>
+
+                        <input type="radio" class="btn-check" name="EhParaEmitirDataNascimento" value="false" id="dataOcultar" checked>
+                        <label class="btn btn-outline-secondary" for="dataOcultar">Ocultar</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Sexo</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="EhParaEmitirSexo" value="true" id="sexoMostrar">
+                        <label class="btn btn-outline-primary" for="sexoMostrar">Mostrar</label>
+
+                        <input type="radio" class="btn-check" name="EhParaEmitirSexo" value="false" id="sexoOcultar" checked>
+                        <label class="btn btn-outline-secondary" for="sexoOcultar">Ocultar</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Cidade</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="EhParaEmitirCidade" value="true" id="cidadeMostrar">
+                        <label class="btn btn-outline-primary" for="cidadeMostrar">Mostrar</label>
+
+                        <input type="radio" class="btn-check" name="EhParaEmitirCidade" value="false" id="cidadeOcultar" checked>
+                        <label class="btn btn-outline-secondary" for="cidadeOcultar">Ocultar</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-primary btn-lg px-4">
+                    Gerar PDF
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
