@@ -31,7 +31,7 @@ namespace EM.Web.Controllers
                 }
                 else if (tipoPesquisa == "nome")
                 {
-                    listaAlunos = _repositorioAluno.Get(a => a.Nome.Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
+                    listaAlunos = _repositorioAluno.GetByContendoNoNome(termoPesquisa);
                 }
             }
 

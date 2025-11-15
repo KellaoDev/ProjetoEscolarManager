@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EM.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EM.Web.styles.css" asp-append-version="true" />
@@ -20,8 +19,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white btn btn-secondary" href="@Url.Action("ListaCidade", "Cidade")">
+                            <a class="nav-link text-white btn btn-secondary me-2" href="@Url.Action("ListaCidade", "Cidade")">
                                 Lista de Cidades
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white btn btn-secondary" href="@Url.Action("RelatorioDeAluno", "RelatorioAluno")">
+                                Relatório de Alunos
                             </a>
                         </li>
                     </ul>
@@ -38,7 +42,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - EM.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Projeto De Estágio Escolar Manager
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

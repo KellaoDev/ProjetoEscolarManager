@@ -1,4 +1,5 @@
 ﻿using EM.Domain;
+using EM.Domain.Enums;
 
 namespace EM.Repository.Repositories.Abstractions
 {
