@@ -32,7 +32,7 @@
 
                         <div class="form-group mb-3">
                             <label asp-for="EnumeradorUF" class="form-label"></label>
-                            <select asp-for="EnumeradorUF" class="form-control"
+                            <select asp-for="EnumeradorUF" class="form-control" required
                                     asp-items="Html.GetEnumSelectList<EnumeradorUF>()">
                             </select>
                             <span asp-validation-for="EnumeradorUF" class="text-danger"></span>

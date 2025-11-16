@@ -13,12 +13,12 @@
 
 <form method="get" asp-action="Buscar" class="row mb-3">
     <div class="col-md-5">
-        <input type="text" name="termoPesquisa" class="form-control" placeholder="Descriçao ou UF da cidade..." />
+        <input type="text" name="termoPesquisa" class="form-control" placeholder="Nome ou UF da cidade..." />
     </div>
     <div class="col-md-3">
         <select name="tipoPesquisa" class="form-control">
             <option value="todos">Todos</option>
-            <option value="descricao">Descrição</option>
+            <option value="descricao">Nome da cidade</option>
             <option value="uf">UF</option>
         </select>
     </div>
@@ -81,7 +81,6 @@
     </div>
 }
 
-<!-- Modal de exclusão -->
 <div class="modal fade" id="excluirModal" tabindex="-1" aria-labelledby="excluirModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
