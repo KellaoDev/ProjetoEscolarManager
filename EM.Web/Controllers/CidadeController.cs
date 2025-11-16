@@ -50,7 +50,7 @@ namespace EM.Web.Controllers
                 return View("Cidade", new Cidade());
             }
             ViewBag.isEdicao = true;
-            Cidade? cidade = _repositorioCidade.Get(d => d.Codigo == id).FirstOrDefault();
+            Cidade? cidade = _repositorioCidade.GetByCodigo(id.Value);
 
             return View("Cidade", cidade);
         }
@@ -74,7 +74,7 @@ namespace EM.Web.Controllers
 
             if (_repositorioCidade.CodigoIbgeExiste(cidade.CodigoIBGE, cidade.Codigo))
             {
-                ModelState.AddModelError("CodigoIBGE", "Já existe uma cidade com esse Código IBGE.");
+                ModelState.AddModelError("CodigoIBGE", "Já existe uma cidade cadastrada com esse código IBGE.");
                 ViewBag.IsEdicao = false;
                 return View("Cidade", cidade);
             }

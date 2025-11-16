@@ -18,7 +18,7 @@ namespace EM.Web.Controllers
                 return View("Aluno", new Aluno());
             }
             ViewBag.IsEdicao = true;
-            Aluno? aluno = _repositorioAluno.Get(c => c.Matricula == id).FirstOrDefault();
+            Aluno? aluno = _repositorioAluno.GetByMatricula(id.Value);
 
             return View("Aluno", aluno);
         }
