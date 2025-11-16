@@ -152,7 +152,7 @@ namespace EM.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Não foi possível obter as cidades pelo nome", ex);
+                throw new InvalidOperationException("Não foi possível obter as cidades por parte do nome", ex);
             }
         }
 

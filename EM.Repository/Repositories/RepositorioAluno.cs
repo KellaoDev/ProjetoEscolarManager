@@ -142,7 +142,7 @@ namespace EM.Repository.Repositories
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Não foi possível obter os listaAlunos por predicado", ex);
+                throw new InvalidOperationException("Não foi possível obter os alunos por predicado", ex);
             }
         }
 
