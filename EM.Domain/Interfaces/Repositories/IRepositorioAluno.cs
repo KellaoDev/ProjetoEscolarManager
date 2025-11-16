@@ -1,6 +1,4 @@
-﻿using EM.Domain;
-
-namespace EM.Repository.Repositories.Abstractions
+﻿namespace EM.Domain.Interfaces.Repositories
 {
     public interface IRepositorioAluno : IRepositorioAbstrato<Aluno>
     {

@@ -1,8 +1,8 @@
 ﻿using EM.Domain;
 using EM.Domain.Enums;
+using EM.Domain.Interfaces.Repositories;
 using EM.Repository.Database;
 using EM.Repository.ExtensionMethods;
-using EM.Repository.Repositories.Abstractions;
 using System.Data.Common;
 using System.Linq.Expressions;
 

@@ -1,6 +1,6 @@
 ﻿using EM.Domain;
-using Microsoft.AspNetCore.Mvc;
 using EM.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {

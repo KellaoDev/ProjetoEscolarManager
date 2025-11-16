@@ -1,6 +1,6 @@
 ﻿using EM.Domain;
 using EM.Domain.Interfaces;
-using EM.Repository.Repositories.Abstractions;
+using EM.Domain.Interfaces.Repositories;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 

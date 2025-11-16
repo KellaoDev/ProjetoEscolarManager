@@ -1,6 +1,6 @@
 using EM.Domain.Interfaces;
+using EM.Domain.Interfaces.Repositories;
 using EM.Repository.Repositories;
-using EM.Repository.Repositories.Abstractions;
 using EM.Web.Services;
 
 namespace EM.Web
