@@ -14,7 +14,6 @@ namespace EM.Web.Controllers
             return View(listaAlunos);
         }
 
-        [HttpGet]
         public IActionResult Buscar(string termoPesquisa, string tipoPesquisa)
         {
             IEnumerable<Aluno> listaAlunos = [];
@@ -25,9 +24,9 @@ namespace EM.Web.Controllers
             }
             else if (!string.IsNullOrWhiteSpace(termoPesquisa))
             {
-                if (tipoPesquisa == "matricula" && int.TryParse(termoPesquisa, out int mat))
+                if (tipoPesquisa == "matricula" && int.TryParse(termoPesquisa, out int matricula))
                 {
-                    listaAlunos = _repositorioAluno.Get(a => a.Matricula == mat);
+                    listaAlunos = _repositorioAluno.Get(a => a.Matricula == matricula);
                 }
                 else if (tipoPesquisa == "nome")
                 {
@@ -42,7 +41,5 @@ namespace EM.Web.Controllers
 
             return View("Index", listaAlunos);
         }
-
     }
-
 }

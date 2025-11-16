@@ -26,7 +26,7 @@ namespace EM.Web.Controllers
             {
                 if (tipoPesquisa == "descricao")
                 {
-                    listaCidades = _repositorioCidade.Get(d => d.Descricao.Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
+                    listaCidades = _repositorioCidade.GetByNome(termoPesquisa);
                 }
                 else if(tipoPesquisa == "uf")
                 {
@@ -68,14 +68,14 @@ namespace EM.Web.Controllers
             if (_repositorioCidade.DescricaoExiste(cidade.Descricao, cidade.Codigo))
             {
                 ModelState.AddModelError("Descricao", "Já existe uma cidade cadastrada com esse nome.");
-                ViewBag.IsEdicao = cidade.Codigo > 0;
+                ViewBag.IsEdicao = false;
                 return View("Cidade", cidade);
             }
 
             if (_repositorioCidade.CodigoIbgeExiste(cidade.CodigoIBGE, cidade.Codigo))
             {
                 ModelState.AddModelError("CodigoIBGE", "Já existe uma cidade com esse Código IBGE.");
-                ViewBag.IsEdicao = cidade.Codigo > 0;
+                ViewBag.IsEdicao = false;
                 return View("Cidade", cidade);
             }
 
@@ -91,7 +91,6 @@ namespace EM.Web.Controllers
             TempData["MensagemSucesso"] = "Cidade salva com sucesso! ✅";
             return RedirectToAction("ListaCidade", "Cidade");
         }
-
 
         public IActionResult Remove(int id)
         {
