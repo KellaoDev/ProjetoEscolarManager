@@ -117,7 +117,7 @@ namespace EM.Repository.Repositories
             }
         }
 
-        public Cidade GetById(int cidadeId)
+        public Cidade GetByCodigo(int cidadeId)
         {
             try
             {
