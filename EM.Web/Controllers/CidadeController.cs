@@ -98,7 +98,7 @@ namespace EM.Web.Controllers
 
             if (possuiVinculo)
             {
-                TempData["MensagemErro"] = "Não é possível excluir esta cidade pois existem alunos vinculados a ela";
+                TempData["MensagemErro"] = "A exclusão desta cidade não pode ser realizada, pois há alunos associados a ela.";
                 return RedirectToAction("ListaCidade");
             }
 
