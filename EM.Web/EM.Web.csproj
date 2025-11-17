@@ -21,7 +21,6 @@
     <Content Remove="Views\Aluno.cshtml" />
     <Content Remove="Views\Home\Aluno.cshtml" />
     <Content Remove="Views\Shared\Error.cshtml" />
-    <Content Remove="Views\_ViewImports.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
