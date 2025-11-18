@@ -9,6 +9,7 @@ namespace EM.Web.Services
     public class RelatorioAlunoService(IRepositorioAluno repositorioAluno) : IRelatorioAlunoService
     {
         private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
+
         public byte[] Emita(RelatorioAlunoFiltrosDTO parametros)
         {
             IEnumerable<Aluno> alunos = _repositorioAluno.GetAll();
@@ -46,43 +47,43 @@ namespace EM.Web.Services
             return memoryStream.ToArray();
         }
 
-        private int CalcularQuantidadeDeColunas(RelatorioAlunoFiltrosDTO parametros)
+        private static void SecaoCabecalho(PdfPTable tabela, string texto)
         {
-            int qtdColunas = 1;
-
-            if (parametros.EhParaEmitirCpf) qtdColunas++;
-            if (parametros.EhParaEmitirDataNascimento) qtdColunas++;
-            if (parametros.EhParaEmitirSexo) qtdColunas++;
-            if (parametros.EhParaEmitirCidade) qtdColunas++;
-
-            return qtdColunas;
+            Font font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+            PdfPCell celula = new(new Phrase(texto, font))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                BackgroundColor = BaseColor.LIGHT_GRAY,
+                Padding = 5
+            };
+            tabela.AddCell(celula);
         }
 
-        private void AdicionarCabecalhos(PdfPTable tabela, RelatorioAlunoFiltrosDTO parametros)
+        private static void AdicionarCabecalhos(PdfPTable tabela, RelatorioAlunoFiltrosDTO parametros)
         {
-            AdicionarHeader(tabela, "Nome Completo");
+            SecaoCabecalho(tabela, "Nome Completo");
 
             if (parametros.EhParaEmitirCpf)
             {
-                AdicionarHeader(tabela, "CPF");
+                SecaoCabecalho(tabela, "CPF");
             }
             if (parametros.EhParaEmitirDataNascimento)
             {
-                AdicionarHeader(tabela, "Data de Nascimento");
+                SecaoCabecalho(tabela, "Data de Nascimento");
             }
-                
+
             if (parametros.EhParaEmitirSexo)
             {
-                AdicionarHeader(tabela, "Sexo");
+                SecaoCabecalho(tabela, "Sexo");
             }
-                
+
             if (parametros.EhParaEmitirCidade)
             {
-                AdicionarHeader(tabela, "Cidade");
+                SecaoCabecalho(tabela, "Cidade");
             }
         }
 
-        private void AdicionarCelulasDaLinha(PdfPTable tabela, Aluno aluno, RelatorioAlunoFiltrosDTO parametros)
+        private static void AdicionarCelulasDaLinha(PdfPTable tabela, Aluno aluno, RelatorioAlunoFiltrosDTO parametros)
         {
             tabela.AddCell(aluno.Nome);
             if (parametros.EhParaEmitirCpf)
@@ -102,17 +103,17 @@ namespace EM.Web.Services
                 tabela.AddCell(aluno.Cidade?.Descricao ?? "-");
             }
         }
-        
-        private void AdicionarHeader(PdfPTable tabela, string texto)
+
+        private static int CalcularQuantidadeDeColunas(RelatorioAlunoFiltrosDTO parametros)
         {
-            Font font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
-            PdfPCell celula = new(new Phrase(texto, font))
-            {
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-                Padding = 5
-            };
-            tabela.AddCell(celula);
-        }
+            int qtdColunas = 1;
+
+            if (parametros.EhParaEmitirCpf) qtdColunas++;
+            if (parametros.EhParaEmitirDataNascimento) qtdColunas++;
+            if (parametros.EhParaEmitirSexo) qtdColunas++;
+            if (parametros.EhParaEmitirCidade) qtdColunas++;
+
+            return qtdColunas;
+        }       
     }
 }
