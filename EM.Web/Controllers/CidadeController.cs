@@ -102,7 +102,7 @@ namespace EM.Web.Controllers
                 return RedirectToAction("ListaCidade");
             }
 
-            Cidade cidade = _repositorioCidade.Get(c => c.Codigo == id).First();
+            Cidade cidade = _repositorioCidade.GetByCodigo(id);
             _repositorioCidade.Remove(cidade);
 
             TempData["MensagemSucesso"] = "Cidade excluída com sucesso! ✅";

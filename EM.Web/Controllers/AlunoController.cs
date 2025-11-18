@@ -57,7 +57,7 @@ namespace EM.Web.Controllers
 
         public IActionResult Remove(int id)
         {
-            Aluno aluno = _repositorioAluno.Get(c => c.Matricula == id).First();
+            Aluno aluno = _repositorioAluno.GetByMatricula(id);
             _repositorioAluno.Remove(aluno);
 
             TempData["MensagemSucesso"] = "Aluno excluido com sucesso! ✅";
