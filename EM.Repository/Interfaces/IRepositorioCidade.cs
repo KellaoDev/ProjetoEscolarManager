@@ -1,4 +1,6 @@
-﻿namespace EM.Domain.Interfaces.Repositories
+﻿using EM.Domain;
+
+namespace EM.Repository.Interfaces
 {
     public interface IRepositorioCidade : IRepositorioAbstrato<Cidade>
     {

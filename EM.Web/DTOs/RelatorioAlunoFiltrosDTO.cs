@@ -1,6 +1,6 @@
-﻿namespace EM.Domain
+﻿namespace EM.Web.DTOs
 {
-    public class ParametrosRelatorioAluno
+    public class RelatorioAlunoFiltrosDTO
     {
         public bool EhParaEmitirCidade { get; set; }
         public bool EhParaEmitirSexo { get; set; }

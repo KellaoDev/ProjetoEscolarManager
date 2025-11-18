@@ -1,6 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using EM.Domain.Interfaces;
+using System.Linq.Expressions;
 
-namespace EM.Domain.Interfaces.Repositories
+namespace EM.Repository.Interfaces
 {
     public interface IRepositorioAbstrato<T> where T : IEntidade
     {

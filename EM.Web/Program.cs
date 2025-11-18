@@ -1,5 +1,4 @@
-using EM.Domain.Interfaces;
-using EM.Domain.Interfaces.Repositories;
+using EM.Repository.Interfaces;
 using EM.Repository.Repositories;
 using EM.Web.Services;
 
@@ -16,7 +15,7 @@ namespace EM.Web
 
             builder.Services.AddScoped<IRepositorioAluno, RepositorioAluno>();
             builder.Services.AddScoped<IRepositorioCidade, RepositorioCidade>();
-            builder.Services.AddScoped<IRelatorioAluno, RelatorioAlunoService>();
+            builder.Services.AddScoped<IRelatorioAlunoService, RelatorioAlunoService>();
 
             var app = builder.Build();
 

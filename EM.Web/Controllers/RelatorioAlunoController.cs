@@ -1,27 +1,27 @@
-﻿using EM.Domain;
-using EM.Domain.Interfaces;
+﻿using EM.Web.DTOs;
+using EM.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {
-    public class RelatorioAlunoController(IRelatorioAluno relatorioAluno) : Controller
+    public class RelatorioAlunoController(IRelatorioAlunoService relatorioAluno) : Controller
     {
-        private readonly IRelatorioAluno _relatorioAlunos = relatorioAluno;
+        private readonly IRelatorioAlunoService _relatorioAlunoService = relatorioAluno;
 
         [HttpGet("RelatorioAluno")]
         public IActionResult RelatorioDeAluno()
         {
-            return View(new ParametrosRelatorioAluno());
+            return View(new RelatorioAlunoFiltrosDTO());
         }
 
-        public IActionResult EmitirRelatorio(ParametrosRelatorioAluno parametros)
+        public IActionResult EmitirRelatorio(RelatorioAlunoFiltrosDTO parametros)
         {
             if(!ModelState.IsValid)
             {
                 return View("Index", parametros);
             }
 
-            byte[] pdfBytes = _relatorioAlunos.Emita(parametros);
+            byte[] pdfBytes = _relatorioAlunoService.Emita(parametros);
 
             return File(pdfBytes, "application/pdf", "RelatorioAlunos.pdf");
         }

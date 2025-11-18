@@ -1,6 +1,6 @@
 ﻿using EM.Domain;
 using EM.Domain.Enums;
-using EM.Domain.Interfaces.Repositories;
+using EM.Repository.Interfaces;
 using EM.Repository.Database;
 using EM.Repository.ExtensionMethods;
 using System.Data.Common;

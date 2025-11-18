@@ -1,15 +1,15 @@
 ﻿using EM.Domain;
-using EM.Domain.Interfaces;
-using EM.Domain.Interfaces.Repositories;
+using EM.Repository.Interfaces;
+using EM.Web.DTOs;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
 namespace EM.Web.Services
 {
-    public class RelatorioAlunoService(IRepositorioAluno repositorioAluno) : IRelatorioAluno
+    public class RelatorioAlunoService(IRepositorioAluno repositorioAluno) : IRelatorioAlunoService
     {
         private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
-        public byte[] Emita(ParametrosRelatorioAluno parametros)
+        public byte[] Emita(RelatorioAlunoFiltrosDTO parametros)
         {
             IEnumerable<Aluno> alunos = _repositorioAluno.GetAll();
 
@@ -46,7 +46,7 @@ namespace EM.Web.Services
             return memoryStream.ToArray();
         }
 
-        private int CalcularQuantidadeDeColunas(ParametrosRelatorioAluno parametros)
+        private int CalcularQuantidadeDeColunas(RelatorioAlunoFiltrosDTO parametros)
         {
             int qtdColunas = 1;
 
@@ -58,31 +58,31 @@ namespace EM.Web.Services
             return qtdColunas;
         }
 
-        private void AdicionarCabecalhos(PdfPTable tabela, ParametrosRelatorioAluno parametros)
+        private void AdicionarCabecalhos(PdfPTable tabela, RelatorioAlunoFiltrosDTO parametros)
         {
-            AdicioneHeader(tabela, "Nome Completo");
+            AdicionarHeader(tabela, "Nome Completo");
 
             if (parametros.EhParaEmitirCpf)
             {
-                AdicioneHeader(tabela, "CPF");
+                AdicionarHeader(tabela, "CPF");
             }
             if (parametros.EhParaEmitirDataNascimento)
             {
-                AdicioneHeader(tabela, "Data de Nascimento");
+                AdicionarHeader(tabela, "Data de Nascimento");
             }
                 
             if (parametros.EhParaEmitirSexo)
             {
-                AdicioneHeader(tabela, "Sexo");
+                AdicionarHeader(tabela, "Sexo");
             }
                 
             if (parametros.EhParaEmitirCidade)
             {
-                AdicioneHeader(tabela, "Cidade");
+                AdicionarHeader(tabela, "Cidade");
             }
         }
 
-        private void AdicionarCelulasDaLinha(PdfPTable tabela, Aluno aluno, ParametrosRelatorioAluno parametros)
+        private void AdicionarCelulasDaLinha(PdfPTable tabela, Aluno aluno, RelatorioAlunoFiltrosDTO parametros)
         {
             tabela.AddCell(aluno.Nome);
             if (parametros.EhParaEmitirCpf)
@@ -103,7 +103,7 @@ namespace EM.Web.Services
             }
         }
         
-        private void AdicioneHeader(PdfPTable tabela, string texto)
+        private void AdicionarHeader(PdfPTable tabela, string texto)
         {
             Font font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
             PdfPCell celula = new(new Phrase(texto, font))

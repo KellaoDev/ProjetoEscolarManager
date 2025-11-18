@@ -1,5 +1,5 @@
 ﻿using EM.Domain;
-using EM.Domain.Interfaces.Repositories;
+using EM.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
