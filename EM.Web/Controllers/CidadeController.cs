@@ -1,5 +1,7 @@
 ﻿using EM.Domain;
 using EM.Repository.Interfaces;
+using EM.Web.Convertes;
+using EM.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
@@ -10,69 +12,73 @@ namespace EM.Web.Controllers
 
         public IActionResult ListaCidade()
         {
-            IEnumerable<Cidade> listaCidades = _repositorioCidade.GetAll();
-            return View(listaCidades);
+            IEnumerable<Cidade> cidades = _repositorioCidade.GetAll();
+            IEnumerable<CidadeModel> cidadesModel = cidades.Select(c => c.Converta());
+
+            return View(cidadesModel);
         }
 
         public IActionResult Buscar(string termoPesquisa, string tipoPesquisa)
         {
-            IEnumerable<Cidade> listaCidades = [];
+            IEnumerable<Cidade> cidades = [];
 
             if(string.IsNullOrWhiteSpace(tipoPesquisa) || tipoPesquisa == "todos")
             {
-                listaCidades = _repositorioCidade.GetAll();
+                cidades = _repositorioCidade.GetAll();
             }
             else if (!string.IsNullOrWhiteSpace(termoPesquisa))
             {
                 if (tipoPesquisa == "descricao")
                 {
-                    listaCidades = _repositorioCidade.GetByNome(termoPesquisa);
+                    cidades = _repositorioCidade.GetByNome(termoPesquisa);
                 }
                 else if(tipoPesquisa == "uf")
                 {
-                    listaCidades = _repositorioCidade.Get(d => d.EnumeradorUF.ToString().Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
+                    cidades = _repositorioCidade.Get(d => d.EnumeradorUF.ToString().Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
                 }
             }
 
-            if(!listaCidades.Any())
+            IEnumerable<CidadeModel> cidadesModel = cidades.Select(c => c.Converta());
+
+            if(!cidadesModel.Any())
             {
                 ViewBag.Mensagem = "Nenhuma cidade encontrada para a pesquisa informada.";
             }
 
-            return View("ListaCidade", listaCidades);
+            return View("ListaCidade", cidadesModel);
         }
         
         public IActionResult Salvar(int? id)
         {
             if (id is null)
             {
-                ViewBag.isEdicao = false;
-                return View("Cidade", new Cidade());
+                return View("Cidade", new CidadeModel());
             }
-            ViewBag.isEdicao = true;
-            Cidade? cidade = _repositorioCidade.GetByCodigo(id.Value);
 
-            return View("Cidade", cidade);
+            Cidade? cidade = _repositorioCidade.GetByCodigo(id.Value);
+            CidadeModel cidadeModel = cidade.Converta();
+
+            return View("Cidade", cidadeModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Salvar(Cidade cidade)
+        public IActionResult Salvar(CidadeModel cidadeModel)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.IsEdicao = cidade.Codigo > 0;
-                return View("Cidade", cidade);
+                return View("Cidade", cidadeModel);
             }
 
-            if (_repositorioCidade.DescricaoExiste(cidade.Descricao, cidade.Codigo))
+            if (_repositorioCidade.DescricaoExiste(cidadeModel.Descricao, cidadeModel.Codigo))
             {
                 ModelState.AddModelError("Descricao", "Já existe uma cidade cadastrada com esse nome.");
-                ViewBag.IsEdicao = false;
-                return View("Cidade", cidade);
+                return View("Cidade", cidadeModel);
             }
 
-            if (cidade.Codigo > 0)
+            Cidade cidade = cidadeModel.Converta();
+
+            if (cidadeModel.Codigo > 0)
             {
                 _repositorioCidade.Update(cidade);
             }

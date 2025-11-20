@@ -1,6 +1,6 @@
 ﻿namespace EM.Domain.Utils.Validations
 {
-    public class Validacoes
+    public static class Validacoes
     {
         public static bool ValidaCpf(string cpf)
         {

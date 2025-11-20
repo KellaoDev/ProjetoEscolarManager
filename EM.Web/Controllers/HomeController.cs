@@ -1,5 +1,7 @@
 using EM.Domain;
 using EM.Repository.Interfaces;
+using EM.Web.Convertes;
+using EM.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
@@ -10,36 +12,40 @@ namespace EM.Web.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Aluno> listaAlunos = _repositorioAluno.GetAll();
-            return View(listaAlunos);
+            IEnumerable<Aluno> alunos = _repositorioAluno.GetAll();
+            IEnumerable<AlunoModel> alunosModel = alunos.Select(a => a.Converta());
+
+            return View(alunosModel);
         }
 
         public IActionResult Buscar(string termoPesquisa, string tipoPesquisa)
         {
-            IEnumerable<Aluno> listaAlunos = [];
+            IEnumerable<Aluno> alunos = [];
 
             if (string.IsNullOrWhiteSpace(tipoPesquisa) || tipoPesquisa == "todos")
             {
-                listaAlunos = _repositorioAluno.GetAll();
+                alunos = _repositorioAluno.GetAll();
             }
             else if (!string.IsNullOrWhiteSpace(termoPesquisa))
             {
                 if (tipoPesquisa == "matricula" && int.TryParse(termoPesquisa, out int matricula))
                 {
-                    listaAlunos = _repositorioAluno.Get(a => a.Matricula == matricula);
+                    alunos = _repositorioAluno.Get(a => a.Matricula == matricula);
                 }
                 else if (tipoPesquisa == "nome")
                 {
-                    listaAlunos = _repositorioAluno.GetByContendoNoNome(termoPesquisa);
+                    alunos = _repositorioAluno.GetByContendoNoNome(termoPesquisa);
                 }
             }
 
-            if (!listaAlunos.Any())
+            IEnumerable<AlunoModel> alunosModel = alunos.Select(a => a.Converta());
+
+            if (!alunosModel.Any())
             {
                 ViewBag.Mensagem = "Nenhum aluno encontrado para a pesquisa informada.";
             }
 
-            return View("Index", listaAlunos);
+            return View("Index", alunosModel);
         }
     }
 }

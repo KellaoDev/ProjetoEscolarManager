@@ -1,9 +1,9 @@
-@using EM.Domain
+@using EM.Web.Models
 @using EM.Domain.Enums
-@model EM.Domain.Cidade
+@model CidadeModel
 
 @{
-    bool isEdicao = ViewBag.IsEdicao ?? false;
+    bool isEdicao = Model.Codigo > 0;
     string titulo = isEdicao ? "Editar Cidade" : "Cadastrar Cidade";
 
     ViewData["Title"] = titulo;
@@ -32,7 +32,7 @@
 
                         <div class="form-group mb-3">
                             <label asp-for="EnumeradorUF" class="form-label"></label>
-                            <select asp-for="EnumeradorUF" class="form-control" required
+                            <select asp-for="EnumeradorUF" class="form-control"
                                     asp-items="Html.GetEnumSelectList<EnumeradorUF>()">
                             </select>
                             <span asp-validation-for="EnumeradorUF" class="text-danger"></span>
@@ -46,9 +46,14 @@
                                 <i class="bi bi-arrow-left"></i> Voltar
                             </a>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

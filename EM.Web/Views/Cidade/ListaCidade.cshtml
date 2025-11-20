@@ -1,4 +1,5 @@
-@model IEnumerable<EM.Domain.Cidade>
+@using EM.Web.Models
+@model IEnumerable<CidadeModel>
 
 @{
     ViewData["Title"] = "Lista de Cidades";
@@ -53,17 +54,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var cidade in Model)
+            @foreach (CidadeModel cidade in Model)
             {
                 <tr>
                     <td>@cidade.Codigo</td>
                     <td>@cidade.Descricao</td>
                     <td>@cidade.EnumeradorUF</td>
                     <td>
-                        <a href="@Url.Action("Salvar", "Cidade", new { id = cidade.Codigo })" class="btn btn-primary btn-sm">
+                        <a href="@Url.Action("Salvar", "Cidade", new { id = cidade.Codigo })"
+                           class="btn btn-primary btn-sm">
                             Editar
                         </a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#excluirModal"
+                        <button type="button" class="btn btn-danger btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#excluirModal"
                                 onclick="abrirModalExcluir('@cidade.Codigo', '@cidade.Descricao')">
                             Excluir
                         </button>
@@ -72,7 +75,8 @@
             }
         </tbody>
     </table>
-} else
+}
+else
 {
     <div class="alert alert-info">
         Nenhuma cidade encontrada.
