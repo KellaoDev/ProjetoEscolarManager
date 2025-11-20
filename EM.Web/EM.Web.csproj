@@ -32,8 +32,4 @@
     <ProjectReference Include="..\EM.Repository\EM.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
