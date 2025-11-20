@@ -19,9 +19,6 @@ namespace EM.Domain
         [Display(Name = "UF")]
         public EnumeradorUF EnumeradorUF { get; set; }
 
-        [Display(Name = "Código IBGE")]
-        public int? CodigoIBGE { get; set; } 
-
         public override bool Equals(object? obj)
         {
             return obj is Cidade model &&
@@ -35,7 +32,7 @@ namespace EM.Domain
 
         public override string ToString()
         {
-            return $"Código: {Codigo}, Descrição: {Descricao}, UF: {EnumeradorUF}, Código IBGE: {CodigoIBGE}";
+            return $"Código: {Codigo}, Descrição: {Descricao}, UF: {EnumeradorUF}";
         }
     }
 }

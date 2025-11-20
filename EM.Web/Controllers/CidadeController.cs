@@ -72,13 +72,6 @@ namespace EM.Web.Controllers
                 return View("Cidade", cidade);
             }
 
-            if (_repositorioCidade.CodigoIbgeExiste(cidade.CodigoIBGE, cidade.Codigo))
-            {
-                ModelState.AddModelError("CodigoIBGE", "Já existe uma cidade cadastrada com esse código IBGE.");
-                ViewBag.IsEdicao = false;
-                return View("Cidade", cidade);
-            }
-
             if (cidade.Codigo > 0)
             {
                 _repositorioCidade.Update(cidade);

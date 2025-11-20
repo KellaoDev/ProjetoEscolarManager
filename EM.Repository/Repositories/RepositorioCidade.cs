@@ -16,15 +16,11 @@ namespace EM.Repository.Repositories
             using DbCommand cmd = cn.CreateCommand();
 
             cmd.CommandText =
-                    @"INSERT INTO TBCIDADE (CIDADESCRICAO, CIDAUF, CIDACODIGOIBGE)
-                                       VALUES (@CIDADESCRICAO, @CIDAUF, @CIDACODIGOIBGE)";
+                    @"INSERT INTO TBCIDADE (CIDADESCRICAO, CIDAUF)
+                                       VALUES (@CIDADESCRICAO, @CIDAUF)";
 
             cmd.Parameters.CreateParameter("@CIDADESCRICAO", cidade.Descricao);
             cmd.Parameters.CreateParameter("@CIDAUF", cidade.EnumeradorUF);
-
-            cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0 
-                    ? cidade.CodigoIBGE
-                    : DBNull.Value);
 
             cmd.ExecuteNonQuery();
         }
@@ -47,17 +43,12 @@ namespace EM.Repository.Repositories
 
             cmd.CommandText = @"UPDATE TBCIDADE SET
                                        CIDADESCRICAO = @CIDADESCRICAO,
-                                       CIDAUF = @CIDAUF,
-                                       CIDACODIGOIBGE = @CIDACODIGOIBGE
+                                       CIDAUF = @CIDAUF
                                        WHERE CIDACODIGO = @CIDACODIGO";
 
             cmd.Parameters.CreateParameter("@CIDACODIGO", cidade.Codigo);
             cmd.Parameters.CreateParameter("@CIDADESCRICAO", cidade.Descricao);
             cmd.Parameters.CreateParameter("@CIDAUF", cidade.EnumeradorUF);
-
-            cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", cidade.CodigoIBGE > 0
-                ? cidade.CodigoIBGE
-                : DBNull.Value);
 
             cmd.ExecuteNonQuery();
         }
@@ -69,7 +60,7 @@ namespace EM.Repository.Repositories
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
 
-            cmd.CommandText = @"SELECT CIDACODIGO, CIDADESCRICAO, CIDAUF, CIDACODIGOIBGE FROM TBCIDADE";
+            cmd.CommandText = @"SELECT CIDACODIGO, CIDADESCRICAO, CIDAUF FROM TBCIDADE";
 
             using DbDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -79,9 +70,6 @@ namespace EM.Repository.Repositories
                     Codigo = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
                     Descricao = dr.GetString(dr.GetOrdinal("CIDADESCRICAO")),
                     EnumeradorUF = (EnumeradorUF)dr.GetInt32(dr.GetOrdinal("CIDAUF")),
-                    CodigoIBGE = dr.IsDBNull(dr.GetOrdinal("CIDACODIGOIBGE"))
-                        ? null
-                        : dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
                 };
                 cidades.Add(cidade);
             }
@@ -139,26 +127,5 @@ namespace EM.Repository.Repositories
             using DbDataReader dr = cmd.ExecuteReader();
             return dr.Read() && dr.GetInt64(0) > 0;
         }
-            
-        public bool CodigoIbgeExiste(int? codigoIbge, int? codigoDesconsiderar = null)
-        {
-            if (!codigoIbge.HasValue)
-                return false;
-
-            
-            using DbConnection cn = DBHelper.CriarConexao();
-            using DbCommand cmd = cn.CreateCommand();
-
-            cmd.CommandText = @"SELECT COUNT(1)
-                                    FROM TBCIDADE
-                                    WHERE CIDACODIGOIBGE = @CIDACODIGOIBGE
-                                    AND (@CODIGO IS NULL OR CIDACODIGO <> @CODIGO)";
-
-            cmd.Parameters.CreateParameter("@CIDACODIGOIBGE", codigoIbge.Value);
-            cmd.Parameters.CreateParameter("@CODIGO", codigoDesconsiderar.HasValue ? codigoDesconsiderar.Value : DBNull.Value);
-
-            using DbDataReader dr = cmd.ExecuteReader();
-            return dr.Read() && dr.GetInt64(0) > 0;
-        } 
     }
 }

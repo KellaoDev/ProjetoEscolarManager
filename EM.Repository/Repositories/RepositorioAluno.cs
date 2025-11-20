@@ -73,7 +73,7 @@ namespace EM.Repository.Repositories
             using DbCommand cmd = cn.CreateCommand();
 
             cmd.CommandText = @"SELECT ALUNMATRICULA, ALUNNOME, ALUNCPF, ALUNDTNASC, ALUNSEXO,
-                                       TBALUNO.CIDACODIGO, CIDADESCRICAO, CIDAUF, CIDACODIGOIBGE
+                                       TBALUNO.CIDACODIGO, CIDADESCRICAO, CIDAUF
                                        FROM TBALUNO
                                        INNER JOIN TBCIDADE ON TBALUNO.CIDACODIGO = TBCIDADE.CIDACODIGO
                                        ORDER BY ALUNMATRICULA";
@@ -93,10 +93,7 @@ namespace EM.Repository.Repositories
                     {
                         Codigo = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
                         Descricao = dr.GetString(dr.GetOrdinal("CIDADESCRICAO")),
-                        EnumeradorUF = (EnumeradorUF)dr.GetInt32(dr.GetOrdinal("CIDAUF")),
-                        CodigoIBGE = dr.IsDBNull(dr.GetOrdinal("CIDACODIGOIBGE"))
-                            ? null
-                            : dr.GetInt32(dr.GetOrdinal("CIDACODIGOIBGE"))
+                        EnumeradorUF = (EnumeradorUF)dr.GetInt32(dr.GetOrdinal("CIDAUF"))
                     }
                 };
                 listaAlunos.Add(aluno);
