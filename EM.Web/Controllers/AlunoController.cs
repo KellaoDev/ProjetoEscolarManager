@@ -1,12 +1,12 @@
-﻿using EM.Web.Models;
+﻿using EM.Domain;
+using EM.Web.Models;
+using EM.Web.Convertes;
 using EM.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using EM.Web.Convertes;
-using EM.Domain;
 
 namespace EM.Web.Controllers
 {
-    public class AlunoController(IRepositorioAluno repositorioAluno, IRepositorioCidade repositorioCidade) : Controller
+    public class AlunoController(IRepositorioAluno repositorioAluno, IRepositorioCidade repositorioCidade) : BaseController
     {
         private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
         private readonly IRepositorioCidade _repositorioCidade = repositorioCidade;
@@ -18,51 +18,51 @@ namespace EM.Web.Controllers
             {
                 return View("Aluno", new AlunoModel());
             }
-            Aluno? entidade = _repositorioAluno.GetByMatricula(id.Value);
+            Aluno? aluno = _repositorioAluno.GetByMatricula(id.Value);
 
-            AlunoModel model = entidade.Converta();
-            return View("Aluno", model);
+            AlunoModel alunoModel = aluno.Converta();
+            return View("Aluno", alunoModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Salvar(AlunoModel aluno)
+        public IActionResult Salvar(AlunoModel alunoModel)
         {
             ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
 
             if (!ModelState.IsValid)
             {
-                return View("Aluno", aluno);
+                return View("Aluno", alunoModel);
             }
 
-            if (_repositorioAluno.CpfExiste(aluno.Cpf, aluno.Matricula))
+            if (_repositorioAluno.CpfExiste(alunoModel.Cpf, alunoModel.Matricula))
             {
                 ModelState.AddModelError("Cpf", "Já existe um aluno cadastrado com esse CPF.");
-                return View("Aluno", aluno);
+                return View("Aluno", alunoModel);
             }
 
-            Aluno entidade = aluno.Converta();
+            Aluno aluno = alunoModel.Converta();
 
             if (aluno.Matricula > 0)
             {
-                _repositorioAluno.Update(entidade);
+                _repositorioAluno.Update(aluno);
             }
             else
             {
-                _repositorioAluno.Add(entidade);
+                _repositorioAluno.Add(aluno);
             }
 
             TempData["MensagemSucesso"] = "Aluno salvo com sucesso! ✅";
-            return RedirectToAction("Index", "Home");
+            return Redirecionar("Index", "Home");
         }
 
         public IActionResult Remove(int id)
         {
-            Aluno entidade = _repositorioAluno.GetByMatricula(id);
-            _repositorioAluno.Remove(entidade);
+            Aluno aluno = _repositorioAluno.GetByMatricula(id);
+            _repositorioAluno.Remove(aluno);
 
             TempData["MensagemSucesso"] = "Aluno excluido com sucesso! ✅";
-            return RedirectToAction("Index", "Home");
+            return Redirecionar("Index", "Home");
         }
     }
 }

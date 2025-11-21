@@ -12,9 +12,9 @@ namespace EM.Domain
         public EnumeradorUF EnumeradorUF { get; set; }
 
         public override bool Equals(object? obj) => obj is Cidade model && Codigo == model.Codigo;
-        
+
         public override int GetHashCode() => HashCode.Combine(Codigo);
-        
+
         public override string ToString() => $"Código: {Codigo}, Descrição: {Descricao}, UF: {EnumeradorUF}";
     }
 }

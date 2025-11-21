@@ -1,12 +1,12 @@
 ﻿using EM.Domain;
-using EM.Repository.Interfaces;
-using EM.Web.Convertes;
 using EM.Web.Models;
+using EM.Web.Convertes;
+using EM.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {
-    public class CidadeController(IRepositorioCidade repositorioCidade) : Controller
+    public class CidadeController(IRepositorioCidade repositorioCidade) : BaseController
     {
         private readonly IRepositorioCidade _repositorioCidade = repositorioCidade;
 
@@ -22,7 +22,7 @@ namespace EM.Web.Controllers
         {
             IEnumerable<Cidade> cidades = [];
 
-            if(string.IsNullOrWhiteSpace(tipoPesquisa) || tipoPesquisa == "todos")
+            if (string.IsNullOrWhiteSpace(tipoPesquisa) || tipoPesquisa == "todos")
             {
                 cidades = _repositorioCidade.GetAll();
             }
@@ -32,7 +32,7 @@ namespace EM.Web.Controllers
                 {
                     cidades = _repositorioCidade.GetByNome(termoPesquisa);
                 }
-                else if(tipoPesquisa == "uf")
+                else if (tipoPesquisa == "uf")
                 {
                     cidades = _repositorioCidade.Get(d => d.EnumeradorUF.ToString().Contains(termoPesquisa, System.StringComparison.OrdinalIgnoreCase));
                 }
@@ -40,14 +40,14 @@ namespace EM.Web.Controllers
 
             IEnumerable<CidadeModel> cidadesModel = cidades.Select(c => c.Converta());
 
-            if(!cidadesModel.Any())
+            if (!cidadesModel.Any())
             {
                 ViewBag.Mensagem = "Nenhuma cidade encontrada para a pesquisa informada.";
             }
 
             return View("ListaCidade", cidadesModel);
         }
-        
+
         public IActionResult Salvar(int? id)
         {
             if (id is null)
@@ -88,7 +88,7 @@ namespace EM.Web.Controllers
             }
 
             TempData["MensagemSucesso"] = "Cidade salva com sucesso! ✅";
-            return RedirectToAction("ListaCidade", "Cidade");
+            return Redirecionar("ListaCidade", "Cidade");
         }
 
         public IActionResult Remove(int id)
@@ -98,14 +98,14 @@ namespace EM.Web.Controllers
             if (possuiVinculo)
             {
                 TempData["MensagemErro"] = "A exclusão desta cidade não pode ser realizada, pois há alunos associados a ela.";
-                return RedirectToAction("ListaCidade");
+                return Redirecionar("ListaCidade");
             }
 
             Cidade cidade = _repositorioCidade.GetByCodigo(id);
             _repositorioCidade.Remove(cidade);
 
             TempData["MensagemSucesso"] = "Cidade excluída com sucesso! ✅";
-            return RedirectToAction("ListaCidade");
+            return Redirecionar("ListaCidade");
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {
-    public class RelatorioAlunoController(IRelatorioAlunoService relatorioAluno) : Controller
+    public class RelatorioAlunoController(IRelatorioAlunoService relatorioAluno) : BaseController
     {
         private readonly IRelatorioAlunoService _relatorioAlunoService = relatorioAluno;
 

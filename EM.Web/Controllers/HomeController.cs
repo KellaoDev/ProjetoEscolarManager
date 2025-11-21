@@ -1,12 +1,12 @@
 using EM.Domain;
-using EM.Repository.Interfaces;
-using EM.Web.Convertes;
 using EM.Web.Models;
+using EM.Web.Convertes;
+using EM.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {
-    public class HomeController(IRepositorioAluno repositorioAluno) : Controller
+    public class HomeController(IRepositorioAluno repositorioAluno) : BaseController
     {
         private readonly IRepositorioAluno _repositorioAluno = repositorioAluno;
 
