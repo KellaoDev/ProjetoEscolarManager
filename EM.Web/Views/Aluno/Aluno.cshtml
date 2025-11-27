@@ -52,7 +52,7 @@
                         <div class="form-group mb-3">
                             <label asp-for="CidadeId" class="form-label"></label>
                             <select asp-for="CidadeId" class="form-select">
-                                @foreach (var cidade in ViewBag.Cidades)
+                                @foreach (Cidade cidade in ViewBag.Cidades)
                                 {
                                     if (Model.CidadeId == cidade.Codigo)
                                     {
