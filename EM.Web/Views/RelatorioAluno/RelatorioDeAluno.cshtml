@@ -94,5 +94,13 @@
                 </button>
             </div>
         </form>
+
+        @if (TempData["Mensagem"] != null)
+        {
+            <div class="mt-5 alert alert-danger">
+                @TempData["Mensagem"]
+            </div>
+        }
+
     </div>
 </div>

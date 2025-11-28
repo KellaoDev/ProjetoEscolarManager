@@ -23,10 +23,17 @@ namespace EM.Web.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.Cidades = _repositorioCidade.GetAll();
-                return View("Index", parametros);
+                return View("RelatorioDeAluno", parametros);
             }
 
             byte[] pdfBytes = _relatorioAlunoService.Emita(parametros);
+
+            if (pdfBytes is null)
+            {
+                TempData["Mensagem"] = "Nenhum aluno encontrado para os filtros informados.";
+                ViewBag.Cidades = _repositorioCidade.GetAll();
+                return View("RelatorioDeAluno", parametros);
+            }
 
             return File(pdfBytes, "application/pdf", "RelatorioAlunos.pdf");
         }

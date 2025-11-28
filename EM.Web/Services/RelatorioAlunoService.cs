@@ -29,6 +29,11 @@ namespace EM.Web.Services
                 alunos = alunos.Where(a => a.Nome.Contains(parametros.NomeContendo, StringComparison.OrdinalIgnoreCase));
             }
 
+            if (!alunos.Any())
+            {
+                return null!;
+            }
+
             using MemoryStream memoryStream = new();
             Document doc = new(PageSize.A4);
             PdfWriter.GetInstance(doc, memoryStream);
