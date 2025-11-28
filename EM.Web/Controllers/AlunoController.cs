@@ -85,14 +85,13 @@ namespace EM.Web.Controllers
 
         private void CarregarCidadesDropDown(int? cidadeSelecionadaId = null)
         {
-            var listaCidade = _repositorioCidade.GetAll()
+            List<SelectListItem> listaCidade = [.. _repositorioCidade.GetAll()
                 .Select(c => new SelectListItem
                 {
                     Text = $"{c.Descricao} - {c.EnumeradorUF}",
                     Value = c.Codigo.ToString(),
                     Selected = cidadeSelecionadaId.HasValue && cidadeSelecionadaId.Value == c.Codigo
-                })
-                .ToList();
+                })];
 
             ViewBag.Cidades = listaCidade;
         }
