@@ -30,6 +30,20 @@ namespace EM.Web.Controllers
         {
             ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
 
+            if (alunoModel.Cidade?.Codigo > 0)
+            {
+                Cidade cidade = _repositorioCidade.GetByCodigo(alunoModel.Cidade.Codigo);
+
+                if (cidade is not null)
+                {
+                    alunoModel.Cidade.Descricao = cidade.Descricao;
+                    alunoModel.Cidade.EnumeradorUF = cidade.EnumeradorUF;
+
+                    ModelState.Remove("Cidade.Descricao");
+                    ModelState.Remove("Cidade.EnumeradorUF");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("Aluno", alunoModel);

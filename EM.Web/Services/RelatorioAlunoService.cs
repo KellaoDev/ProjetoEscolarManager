@@ -36,7 +36,7 @@ namespace EM.Web.Services
 
             AdicionarCabecalhos(tabela, parametros);
 
-            foreach (var aluno in alunos)
+            foreach (Aluno aluno in alunos)
             {
                 AdicionarCelulasDaLinha(tabela, aluno, parametros);
             }

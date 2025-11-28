@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace EM.Repository.Repositories
 {
-    public class RepositorioCidade : IRepositorioAbstrato<Cidade>, IRepositorioCidade
+    public class RepositorioCidade : RepositorioAbstrato<Cidade>, IRepositorioCidade
     {
-        public void Add(Cidade cidade)
+        public override void Add(Cidade cidade)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
@@ -25,7 +25,7 @@ namespace EM.Repository.Repositories
             cmd.ExecuteNonQuery();
         }
 
-        public void Remove(Cidade cidade)
+        public override void Remove(Cidade cidade)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
@@ -36,7 +36,7 @@ namespace EM.Repository.Repositories
             cmd.ExecuteNonQuery();
         }
 
-        public void Update(Cidade cidade)
+        public override void Update(Cidade cidade)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
@@ -53,7 +53,7 @@ namespace EM.Repository.Repositories
             cmd.ExecuteNonQuery();
         }
 
-        public IEnumerable<Cidade> GetAll()
+        public override IEnumerable<Cidade> GetAll()
         {
             List<Cidade> cidades = [];
 
@@ -82,13 +82,12 @@ namespace EM.Repository.Repositories
             return cidade ?? throw new InvalidOperationException("Não foi possível encontrar a cidade pelo ID");
         }
 
-        public IEnumerable<Cidade> Get(Expression<Func<Cidade, bool>> predicate)
+        public override IEnumerable<Cidade> Get(Expression<Func<Cidade, bool>> predicate)
         {
             IEnumerable<Cidade> cidades = GetAll().Where(predicate.Compile());
             return cidades;
         }
         
-
         public IEnumerable<Cidade> GetByNome(string nomeCidade)
         {
             IEnumerable<Cidade> cidades = GetAll().Where(c => c.Descricao.Contains(nomeCidade, StringComparison.OrdinalIgnoreCase));

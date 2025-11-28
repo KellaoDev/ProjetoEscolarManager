@@ -15,8 +15,6 @@ namespace EM.Domain
 
         public EnumeradorSexo EnumeradorSexo { get; set; }
 
-        public int CidadeId { get; set; }
-
         public Cidade? Cidade { get; set; }
 
         public override bool Equals(object? obj) => obj is Aluno aluno && Matricula == aluno.Matricula;

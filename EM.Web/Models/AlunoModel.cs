@@ -27,9 +27,6 @@ namespace EM.Web.Models
         [Display(Name = "Sexo")]
         public EnumeradorSexo EnumeradorSexo { get; set; }
 
-        [Display(Name = "Cidade")]
-        public int CidadeId { get; set; }
-
         public CidadeModel? Cidade { get; set; }
     }
 }

@@ -13,9 +13,8 @@ namespace EM.Web.Models
         [Display(Name = "Nome da Cidade")]
         public string Descricao { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "UF")]
         public EnumeradorUF EnumeradorUF { get; set; }
-
     }
 }

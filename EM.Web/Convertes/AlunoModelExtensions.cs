@@ -5,7 +5,7 @@ namespace EM.Web.Convertes
 {
     public static class AlunoModelExtensions
     {
-        public static Aluno Converta(this AlunoModel aluno) => 
+        public static Aluno Converta(this AlunoModel aluno) =>
             new()
             {
                 Matricula = aluno.Matricula,
@@ -13,7 +13,15 @@ namespace EM.Web.Convertes
                 Cpf = aluno.Cpf,
                 DataNascimento = aluno.DataNascimento,
                 EnumeradorSexo = aluno.EnumeradorSexo,
-                CidadeId = aluno.CidadeId,
+
+                Cidade = aluno.Cidade == null
+                    ? null
+                    : new Cidade
+                    {
+                        Codigo = aluno.Cidade.Codigo,
+                        Descricao = aluno.Cidade.Descricao,
+                        EnumeradorUF = aluno.Cidade.EnumeradorUF
+                    }
             };
 
         public static AlunoModel Converta(this Aluno entidade)
@@ -25,7 +33,15 @@ namespace EM.Web.Convertes
                 Cpf = entidade.Cpf,
                 DataNascimento = entidade.DataNascimento,
                 EnumeradorSexo = entidade.EnumeradorSexo,
-                CidadeId = entidade.CidadeId
+
+                Cidade = entidade.Cidade == null
+                    ? null
+                    : new CidadeModel
+                    {
+                        Codigo = entidade.Cidade.Codigo,
+                        Descricao = entidade.Cidade.Descricao,
+                        EnumeradorUF = entidade.Cidade.EnumeradorUF
+                    }
             };
 
             return model;

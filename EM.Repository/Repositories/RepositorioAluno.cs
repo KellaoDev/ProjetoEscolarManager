@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace EM.Repository.Repositories
 {
-    public class RepositorioAluno : IRepositorioAbstrato<Aluno>, IRepositorioAluno
+    public class RepositorioAluno : RepositorioAbstrato<Aluno>, IRepositorioAluno
     {
-        public void Add(Aluno aluno)
+        public override void Add(Aluno aluno)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
@@ -23,12 +23,12 @@ namespace EM.Repository.Repositories
             cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
             cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
             cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
-            cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.CidadeId);
+            cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.Cidade?.Codigo ?? (object)DBNull.Value);
 
             cmd.ExecuteNonQuery();
         }
 
-        public void Remove(Aluno aluno)
+        public override void Remove(Aluno aluno)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbCommand cmd = cn.CreateCommand();
@@ -39,7 +39,7 @@ namespace EM.Repository.Repositories
             cmd.ExecuteNonQuery();
         }
         
-        public void Update(Aluno aluno)
+        public override void Update(Aluno aluno)
         {
             using DbConnection cn = DBHelper.CriarConexao();
             using DbTransaction tran = cn.BeginTransaction();
@@ -59,13 +59,13 @@ namespace EM.Repository.Repositories
             cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
             cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
             cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
-            cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.CidadeId);
+            cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.Cidade?.Codigo ?? (object)DBNull.Value);
 
             cmd.ExecuteNonQuery();
             tran.Commit();
         }
 
-        public IEnumerable<Aluno> GetAll()
+        public override IEnumerable<Aluno> GetAll()
         {
             List<Aluno> listaAlunos = [];
 
@@ -88,7 +88,6 @@ namespace EM.Repository.Repositories
                     Cpf = dr.GetString(dr.GetOrdinal("ALUNCPF")),
                     DataNascimento = dr.GetDateTime(dr.GetOrdinal("ALUNDTNASC")),
                     EnumeradorSexo = (EnumeradorSexo)dr.GetInt32(dr.GetOrdinal("ALUNSEXO")),
-                    CidadeId = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
                     Cidade = new Cidade
                     {
                         Codigo = dr.GetInt32(dr.GetOrdinal("CIDACODIGO")),
@@ -101,7 +100,7 @@ namespace EM.Repository.Repositories
             return listaAlunos;
         }
 
-        public IEnumerable<Aluno> Get(Expression<Func<Aluno, bool>> predicate)
+        public override IEnumerable<Aluno> Get(Expression<Func<Aluno, bool>> predicate)
         {
             IEnumerable<Aluno> alunos = GetAll().Where(predicate.Compile());
             return alunos;
