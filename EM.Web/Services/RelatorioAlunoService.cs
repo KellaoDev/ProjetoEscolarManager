@@ -14,6 +14,21 @@ namespace EM.Web.Services
         {
             IEnumerable<Aluno> alunos = _repositorioAluno.GetAll();
 
+            if (!string.IsNullOrWhiteSpace(parametros.Sexo))
+            {
+                alunos = alunos.Where(a => a.EnumeradorSexo.ToString() == parametros.Sexo);
+            }
+
+            if (parametros.CidadeId.HasValue)
+            {
+                alunos = alunos.Where(a => a.Cidade?.Codigo == parametros.CidadeId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(parametros.NomeContendo))
+            {
+                alunos = alunos.Where(a => a.Nome.Contains(parametros.NomeContendo, StringComparison.OrdinalIgnoreCase));
+            }
+
             using MemoryStream memoryStream = new();
             Document doc = new(PageSize.A4);
             PdfWriter.GetInstance(doc, memoryStream);

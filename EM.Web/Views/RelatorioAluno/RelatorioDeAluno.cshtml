@@ -6,17 +6,47 @@
 
 <div class="container mt-4">
     <div class="card shadow-sm p-4">
-        <h2 class="mb-4">@ViewData["Title"]</h2>
 
+        <h2 class="mb-4">@ViewData["Title"]</h2>
         <form asp-action="EmitirRelatorio" method="post">
 
-            <h5 class="mt-4 mb-4">Parâmetros de Exibição</h5>
+            <h5 class="mt-4 mb-4">Filtros</h5>
 
             <div class="row g-4">
 
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Nome contendo</label>
+                    <input type="text" name="NomeContendo" class="form-control"/>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Sexo</label>
+                    <select name="Sexo" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Cidade</label>
+                    <select name="CidadeId" class="form-select">
+                        <option value="">Todas</option>
+                        @foreach (Cidade cidade in ViewBag.Cidades)
+                        {
+                            <option value="@cidade.Codigo">@cidade.Descricao - @cidade.EnumeradorUF</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+
+            <h5 class="mt-5 mb-4">Parâmetros de Exibição</h5>
+
+            <div class="row g-4">
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">CPF</label>
-                    <div class="btn-group w-100" role="group">
+                    <div class="btn-group w-100">
                         <input type="radio" class="btn-check" name="EhParaEmitirCpf" value="true" id="cpfMostrar">
                         <label class="btn btn-outline-primary" for="cpfMostrar">Mostrar</label>
 
@@ -27,7 +57,7 @@
 
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Data de Nascimento</label>
-                    <div class="btn-group w-100" role="group">
+                    <div class="btn-group w-100">
                         <input type="radio" class="btn-check" name="EhParaEmitirDataNascimento" value="true" id="dataMostrar">
                         <label class="btn btn-outline-primary" for="dataMostrar">Mostrar</label>
 
@@ -38,7 +68,7 @@
 
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Sexo</label>
-                    <div class="btn-group w-100" role="group">
+                    <div class="btn-group w-100">
                         <input type="radio" class="btn-check" name="EhParaEmitirSexo" value="true" id="sexoMostrar">
                         <label class="btn btn-outline-primary" for="sexoMostrar">Mostrar</label>
 
@@ -49,7 +79,7 @@
 
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Cidade</label>
-                    <div class="btn-group w-100" role="group">
+                    <div class="btn-group w-100">
                         <input type="radio" class="btn-check" name="EhParaEmitirCidade" value="true" id="cidadeMostrar">
                         <label class="btn btn-outline-primary" for="cidadeMostrar">Mostrar</label>
 
@@ -57,7 +87,6 @@
                         <label class="btn btn-outline-secondary" for="cidadeOcultar">Ocultar</label>
                     </div>
                 </div>
-
             </div>
 
             <div class="mt-4 text-end">

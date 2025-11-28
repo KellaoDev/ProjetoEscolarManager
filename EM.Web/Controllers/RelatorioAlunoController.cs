@@ -1,23 +1,29 @@
-﻿using EM.Web.DTOs;
+﻿using EM.Repository.Interfaces;
+using EM.Repository.Repositories;
+using EM.Web.DTOs;
 using EM.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Web.Controllers
 {
-    public class RelatorioAlunoController(IRelatorioAlunoService relatorioAluno) : BaseController
+    public class RelatorioAlunoController(IRelatorioAlunoService relatorioAluno, IRepositorioCidade repositorioCidade) : BaseController
     {
         private readonly IRelatorioAlunoService _relatorioAlunoService = relatorioAluno;
+        private readonly IRepositorioCidade _repositorioCidade = repositorioCidade;
 
         [HttpGet("RelatorioAluno")]
         public IActionResult RelatorioDeAluno()
         {
+            ViewBag.Cidades = _repositorioCidade.GetAll();
             return View(new RelatorioAlunoFiltrosDTO());
         }
 
+        [HttpPost]
         public IActionResult EmitirRelatorio(RelatorioAlunoFiltrosDTO parametros)
         {
             if(!ModelState.IsValid)
             {
+                ViewBag.Cidades = _repositorioCidade.GetAll();
                 return View("Index", parametros);
             }
 
