@@ -5,7 +5,7 @@ namespace EM.Web.Models
 {
     public class CidadeModel
     {
-        [Required]
+        [Display(Name = "Código")]
         public int Codigo { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]

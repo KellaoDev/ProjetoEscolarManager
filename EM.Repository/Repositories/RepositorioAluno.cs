@@ -20,7 +20,7 @@ namespace EM.Repository.Repositories
                                       VALUES (@ALUNNOME, @ALUNCPF, @ALUNDTNASC, @ALUNSEXO, @CIDACODIGO)";
 
             cmd.Parameters.CreateParameter("@ALUNNOME", aluno.Nome);
-            cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
+            cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf ?? string.Empty);
             cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
             cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
             cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.Cidade?.Codigo ?? (object)DBNull.Value);
@@ -56,7 +56,7 @@ namespace EM.Repository.Repositories
 
             cmd.Parameters.CreateParameter("@ALUNMATRICULA", aluno.Matricula);
             cmd.Parameters.CreateParameter("@ALUNNOME", aluno.Nome);
-            cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf != null ? aluno.Cpf : DBNull.Value);
+            cmd.Parameters.CreateParameter("@ALUNCPF", aluno.Cpf ?? string.Empty);
             cmd.Parameters.CreateParameter("@ALUNDTNASC", aluno.DataNascimento);
             cmd.Parameters.CreateParameter("@ALUNSEXO", aluno.EnumeradorSexo);
             cmd.Parameters.CreateParameter("@CIDACODIGO", aluno.Cidade?.Codigo ?? (object)DBNull.Value);

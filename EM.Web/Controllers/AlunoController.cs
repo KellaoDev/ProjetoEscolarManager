@@ -1,8 +1,9 @@
 ﻿using EM.Domain;
-using EM.Web.Models;
-using EM.Web.Convertes;
 using EM.Repository.Interfaces;
+using EM.Web.Convertes;
+using EM.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EM.Web.Controllers
 {
@@ -13,14 +14,16 @@ namespace EM.Web.Controllers
 
         public IActionResult Salvar(int? id)
         {
-            ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
             if (id is null)
             {
+                CarregarCidadesDropDown(null);
                 return View("Aluno", new AlunoModel());
             }
             Aluno? aluno = _repositorioAluno.GetByMatricula(id.Value);
 
             AlunoModel alunoModel = aluno.Converta();
+            CarregarCidadesDropDown(alunoModel.Cidade?.Codigo);
+
             return View("Aluno", alunoModel);
         }
 
@@ -28,7 +31,7 @@ namespace EM.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Salvar(AlunoModel alunoModel)
         {
-            ViewBag.Cidades = _repositorioCidade.GetAll().ToList();
+            CarregarCidadesDropDown(alunoModel.Cidade?.Codigo);
 
             if (alunoModel.Cidade?.Codigo > 0)
             {
@@ -56,6 +59,7 @@ namespace EM.Web.Controllers
             }
 
             Aluno aluno = alunoModel.Converta();
+            CarregarCidadesDropDown(alunoModel.Cidade?.Codigo);
 
             if (aluno.Matricula > 0)
             {
@@ -77,6 +81,20 @@ namespace EM.Web.Controllers
 
             TempData["MensagemSucesso"] = "Aluno excluido com sucesso! ✅";
             return Redirecionar("Index", "Home");
+        }
+
+        private void CarregarCidadesDropDown(int? cidadeSelecionadaId = null)
+        {
+            var listaCidade = _repositorioCidade.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Text = $"{c.Descricao} - {c.EnumeradorUF}",
+                    Value = c.Codigo.ToString(),
+                    Selected = cidadeSelecionadaId.HasValue && cidadeSelecionadaId.Value == c.Codigo
+                })
+                .ToList();
+
+            ViewBag.Cidades = listaCidade;
         }
     }
 }

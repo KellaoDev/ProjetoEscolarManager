@@ -6,7 +6,6 @@ namespace EM.Web.Models
 {
     public class AlunoModel
     {
-        [Required]
         [Display(Name = "Matrícula")]
         public int Matricula { get; set; }
 

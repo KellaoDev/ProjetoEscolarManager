@@ -50,21 +50,11 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label asp-for="Cidade.Codigo" class="form-label"></label>
-                            <select asp-for="Cidade.Codigo" class="form-select">
-                                @foreach (Cidade cidade in ViewBag.Cidades)
-                                {
-                                    if (Model.Cidade?.Codigo == cidade.Codigo)
-                                    {
-                                        <option value="@cidade.Codigo" selected>@cidade.Descricao - @cidade.EnumeradorUF</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@cidade.Codigo">@cidade.Descricao - @cidade.EnumeradorUF</option>
-                                    }
-                                }
+                            <label asp-for="Cidade.Descricao" class="form-label"></label>
+                            <select asp-for="Cidade.Codigo" class="form-select"
+                                    asp-items="ViewBag.Cidades">
+                                <option value="">Selecione uma cidade</option>
                             </select>
-                            <span asp-validation-for="Cidade.Codigo" class="text-danger"></span>
                         </div>
 
                         <div class="form-group mt-5">
